@@ -1,5 +1,6 @@
 import { Application, Container, Texture, Sprite } from 'pixi.js'
 import './styles/style.css'
+import img from '../public/assets/wing.png'
 
 // Initialize PixiJS aplication
 const app = new Application({
@@ -26,7 +27,7 @@ const container = new Container();
 app.stage.addChild(container);
 
 // Create a new texture
-const texture = Texture.from('./assets/wing.png');
+const texture = Texture.from(img);
 
 // Create a 5x5 grid of bunnies
 for (let i = 0; i < 25; i++) {
