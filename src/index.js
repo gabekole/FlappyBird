@@ -6,8 +6,8 @@ const app = new Application({
      background: '#1099bb',
      antialias: true,
      autoDensity: true,
-     width: 400,
-     height: 400,
+     width: visualViewport.width,
+     height: visualViewport.height,
     });
 
 const gameArea = document.getElementById('game-area')
