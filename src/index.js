@@ -14,7 +14,7 @@ const gameArea = document.getElementById('game-area')
 gameArea.appendChild(app.view);
 
 //  Create background sprite and set its width to the entire page
-const background = new Sprite(Texture.WHITE)
+const background = new Sprite()
 background.width = app.screen.width;
 background.height = app.screen.height;
 background.interactive = true;
