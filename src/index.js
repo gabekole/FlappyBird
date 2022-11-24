@@ -1,7 +1,7 @@
 import { Application, Container, Texture, Sprite } from 'pixi.js'
 import './styles/style.css'
 
-
+// Initialize PixiJS aplication
 const app = new Application({
      background: '#1099bb',
      antialias: true,
@@ -13,6 +13,7 @@ const app = new Application({
 const gameArea = document.getElementById('game-area')
 gameArea.appendChild(app.view);
 
+//  Create background sprite and set its width to the entire page
 const background = new Sprite(Texture.WHITE)
 background.width = app.screen.width;
 background.height = app.screen.height;
@@ -20,8 +21,8 @@ background.interactive = true;
 app.stage.addChild(background)
 background.on('click', ()=>{ console.log('app clicked '); })
 
-const container = new Container();
 
+const container = new Container();
 app.stage.addChild(container);
 
 // Create a new texture
