@@ -1,4 +1,4 @@
-import { Application, Container, Texture, Sprite, TextureSystem } from 'pixi.js'
+import { Application, Container, Texture, Sprite } from 'pixi.js'
 import './styles/style.css'
 
 
@@ -13,10 +13,16 @@ const app = new Application({
 const gameArea = document.getElementById('game-area')
 gameArea.appendChild(app.view);
 
+const background = new Sprite(Texture.WHITE)
+background.width = app.screen.width;
+background.height = app.screen.height;
+background.interactive = true;
+app.stage.addChild(background)
+background.on('click', ()=>{ console.log('app clicked '); })
+
 const container = new Container();
 
 app.stage.addChild(container);
-
 
 // Create a new texture
 const texture = Texture.from('./assets/wing.png');
@@ -39,11 +45,6 @@ container.y = app.screen.height / 2;
 // Center bunny sprite in local container coordinates
 container.pivot.x = container.width / 2;
 container.pivot.y = container.height / 2;
-
-container.interactive = true;
-container.children[0].interactive = true;
-container.on('click', (event) => {console.log('container clicked');});
-container.children[0].on('click', (event) => {console.log('first bird clicked')})
 
 // Listen for animate update
 app.ticker.add((delta) => {
