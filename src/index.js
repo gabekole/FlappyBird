@@ -1,8 +1,17 @@
 import { Application, Container, Texture, Sprite } from 'pixi.js'
+import './styles/style.css'
 
 
-const app = new Application({ background: '#1099bb' });
-document.body.appendChild(app.view);
+const app = new Application({
+     background: '#1099bb',
+     antialias: true,
+     autoDensity: true,
+     width: visualViewport.width,
+     width: visualViewport.height,
+    });
+
+const gameArea = document.getElementById('game-area')
+gameArea.appendChild(app.view);
 
 const container = new Container();
 
@@ -30,7 +39,7 @@ container.pivot.x = container.width / 2;
 container.pivot.y = container.height / 2;
 
 // Listen for animate update
-app.ticker.a((delta) => {
+app.ticker.add((delta) => {
     // rotate the container!
     // use delta to create frame-independent transform
     container.rotation -= 0.01 * delta;
