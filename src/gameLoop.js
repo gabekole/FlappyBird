@@ -1,5 +1,6 @@
 import { Sprite, Text, Texture } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
+import { boxCollides } from './collision.ts'
 import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
 import { Player } from './players.ts';
@@ -13,6 +14,14 @@ graphic.height = 100;
 const hitbox = new Sprite(Texture.WHITE);
 hitbox.width = 80;
 hitbox.height = 80;
+
+// Create ground sprite 
+const ground = Sprite.from(groundImg);
+ground.width = constants['gameWidth'];
+ground.height = 50;
+ground.anchor.set(0,1);
+ground.x = 0;
+ground.y = constants['gameHeight'];
 
 // Create state variables
 let state = {
@@ -51,6 +60,7 @@ function menuUpdate(delta, app) {
     }
 }
 
+
 function playUpdate(delta, app){
     if (!state['modeStarted']){
         app.stage.removeChildren();
@@ -69,17 +79,17 @@ function playUpdate(delta, app){
 
         state['player'].setPosition(80, 50);
 
-        const ground = Sprite.from(groundImg);
-        ground.width = constants['gameWidth'];
-        ground.height = 100;
-        ground.anchor.set(0,0);
-        ground.x = 0;
-        ground.y = constants['gameHeight']-50;
         app.stage.addChild(ground);
 
         state['modeStarted'] = 1;
     }
     state['player'].updatePhysics(delta, .5, 25);
+
+    if (boxCollides(state['player'].hitbox, ground)){
+        state['mode'] = 'dead';
+        state['modeStarted'] = 0;
+        console.log('collide');
+    }
 }
 
 function gameUpdate(delta, app) {
