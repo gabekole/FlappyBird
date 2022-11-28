@@ -28,10 +28,11 @@ ground.y = constants['gameHeight'];
 // Create state variables
 let state = {
     mode: 'menu', //menu, game, dead
-    modeStarted: 0, //0 if mode not run before
+    modeStarted: false, 
     inGameState: {
         currentScore: 0,
         distance: 0,
+        onGround: false,
     },
     history: {
         highScore: 0,
@@ -49,7 +50,7 @@ function menuUpdate(delta, app) {
         clickableArea.width = app.screen.width;
         clickableArea.height = app.screen.height;
         clickableArea.interactive = true;
-        clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = 0;});
+        clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = false;});
         app.stage.addChild(clickableArea)
         
 
@@ -59,7 +60,7 @@ function menuUpdate(delta, app) {
         
         app.stage.addChild(richText);
 
-        state['modeStarted'] = 1;
+        state['modeStarted'] = true;
     }
 }
 
@@ -89,7 +90,7 @@ function playUpdate(delta, app) {
 
         app.stage.addChild(ground);
 
-        state['modeStarted'] = 1;
+        state['modeStarted'] = true;
     }
     state['player'].updatePhysics(delta, .5, 25);
 
@@ -97,12 +98,16 @@ function playUpdate(delta, app) {
 
     if ( pipeCollides(state['player'].hitbox, p)){
         console.log('collidePipe')
+        state['mode'] = 'dead';
+        state['modeStarted'] = false;
+        state['player'].setVelocity(0.1)
     }
 
     if (boxCollides(state['player'].hitbox, ground)){
         state['mode'] = 'dead';
-        state['modeStarted'] = 0;
-        console.log('collide');
+        state['modeStarted'] = false;
+        state['inGameState']['onGround'] = true;
+        console.log('collideGround');
     }
 }
 
@@ -121,6 +126,16 @@ function deadUpdate(delta, app) {
     
         state['modeStarted'] = 1;
     }
+
+    if(!state['inGameState']['onGround']){
+        state['player'].updatePhysics(delta, .5, 25);
+
+        if (boxCollides(state['player'].hitbox, ground)){
+            state['inGameState']['onGround'] = true;
+            console.log('collideGround');
+        }
+    }
+
 }
 
 function gameUpdate(delta, app) {

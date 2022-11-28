@@ -21,9 +21,12 @@ class Player {
     }
 
     public updatePhysics(delta : number, gravity : number, maxVelocity : number){
+        console.log(this.velocity);
         this.velocity += gravity*delta;
 
         this.velocity = Math.min(Math.abs(this.velocity), maxVelocity) * Math.sign(this.velocity); 
+
+        
 
         const rotation = (this.velocity/22 + 9*this.graphic.rotation)/10
 
