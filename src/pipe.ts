@@ -1,7 +1,7 @@
 import { Texture, Sprite } from 'pixi.js'
 import constants from './constants'
 
-const width = 50;
+const width = 80;
 const gap = 200;
 
 class Pipe {
