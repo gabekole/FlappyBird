@@ -25,6 +25,12 @@ class Player {
 
         this.velocity = Math.min(Math.abs(this.velocity), maxVelocity) * Math.sign(this.velocity); 
 
+        const rotation = (this.velocity/22 + 5*this.graphic.rotation)/6
+
+        this.graphic.rotation = rotation;
+        this.hitbox.rotation = rotation;
+        console.log(this.velocity, this.graphic.rotation)
+
         this.incrementPosition(0, this.velocity * delta);
     }
     public setVelocity(velocity : number){
@@ -45,16 +51,6 @@ class Player {
 
         this.graphic.y += y;
         this.hitbox.y += y;
-    }
-    
-    public setRotation(angle: number){
-        this.graphic.rotation = angle;
-        this.hitbox.rotation = angle;
-    }
-
-    public incrementRotation(angle: number){
-        this.graphic.rotation += angle;
-        this.hitbox.rotation += angle;
     }
 }
 

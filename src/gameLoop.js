@@ -12,8 +12,8 @@ const graphic = Sprite.from(playerImg);
 graphic.width = 100;
 graphic.height = 100;
 const hitbox = new Sprite(Texture.WHITE);
-hitbox.width = 80;
-hitbox.height = 80;
+hitbox.width = 65;
+hitbox.height = 75;
 
 // Create ground sprite 
 const ground = Sprite.from(groundImg);
@@ -61,7 +61,7 @@ function menuUpdate(delta, app) {
 }
 
 
-function playUpdate(delta, app){
+function playUpdate(delta, app) {
     if (!state['modeStarted']){
         app.stage.removeChildren();
         const clickableArea = new Sprite();
@@ -92,13 +92,32 @@ function playUpdate(delta, app){
     }
 }
 
+function deadUpdate(delta, app) {
+    if (!state['modeStarted']){
+        const clickableArea = app.stage.getChildAt(0);
+        clickableArea.removeAllListeners();
+
+        clickableArea.on('pointerdown', ()=>{ state['mode'] = 'play'; state['modeStarted'] = 0;})
+
+        const richText = new Text('Click to play again', titleTextStyle);
+        richText.x = 50;
+        richText.y = 220;
+        
+        app.stage.addChild(richText);
+    
+        state['modeStarted'] = 1;
+    }
+}
+
 function gameUpdate(delta, app) {
-    console.log(state['mode'])
     if (state['mode'] == 'menu') {
         menuUpdate(delta, app)
     }
     if (state['mode'] == 'play'){
         playUpdate(delta, app);
+    }
+    if (state['mode'] == 'dead'){
+        deadUpdate(delta, app);
     }
 }
 
