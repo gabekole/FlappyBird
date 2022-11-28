@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js'
+import { Application, Sprite } from 'pixi.js'
 import './styles/style.css'
 import { gameUpdate } from './gameLoop.js'
 
@@ -21,7 +21,7 @@ function initialize(){
    gameArea.appendChild(app.view);
    
 
-   app.ticker.add( (()=>gameUpdate(app)) )
+   app.ticker.add( ((delta)=>gameUpdate(delta, app)) )
 }
 
 

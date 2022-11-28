@@ -1,6 +1,17 @@
-import { Sprite, Text } from 'pixi.js'
+import { Sprite, Text, Texture } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
+import img from '../public/assets/wing.png'
+import { Player } from './players.ts';
 
+// Creating the player components
+const graphic = Sprite.from(img);
+graphic.width = 100;
+graphic.height = 100;
+const hitbox = new Sprite(Texture.WHITE);
+hitbox.width = 80;
+hitbox.height = 80;
+
+// Create state variables
 let state = {
     mode: 'menu', //menu, game, dead
     modeStarted: 0, //0 if mode not run before
@@ -12,21 +23,19 @@ let state = {
         highScore: 0,
         maxDistance: 0,
     },
+    player: new Player(graphic, hitbox),
 }
 
 
 
-function menuUpdate(app) {
+function menuUpdate(delta, app) {
     if (!state['modeStarted']){
         app.stage.removeChildren();
         const clickableArea = new Sprite();
-        clickableArea.width = app.screen.wdith;
+        clickableArea.width = app.screen.width;
         clickableArea.height = app.screen.height;
-        function temp(){
-            console.log('hello')
-        }
-
-        clickableArea.on('pointerdown', temp);
+        clickableArea.interactive = true;
+        clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = 0;});
         app.stage.addChild(clickableArea)
 
         const richText = new Text('Flappy Bird Clone', titleTextStyle);
@@ -39,32 +48,36 @@ function menuUpdate(app) {
     }
 }
 
-function playUpdate(app){
+function playUpdate(delta, app){
     if (!state['modeStarted']){
         app.stage.removeChildren();
         const clickableArea = new Sprite();
-        clickableArea.width = app.width;
-        clickableArea.height = app.height;
-        clickableArea.on('click', ()=>{state['mode'] = 'menu', state['modeStarted'] = 0;});
+        clickableArea.width = app.screen.width;
+        clickableArea.height = app.screen.height;
+        clickableArea.interactive = true;
         app.stage.addChild(clickableArea)
 
-        const richText = new Text('Flappy Bird game', titleTextStyle);
-        richText.x = 50;
-        richText.y = 220;
-        
-        app.stage.addChild(richText);
+        clickableArea.on('pointerdown', ()=>{ state['player'].setVelocity(-10); });
+
+
+        state['player'].setVelocity(0);
+        app.stage.addChild(state['player'].hitbox);
+        app.stage.addChild(state['player'].graphic);
+
+        state['player'].setPosition(50, 50);
 
         state['modeStarted'] = 1;
-    } 
+    }
+    state['player'].updatePhysics(delta, .5, 25);
 }
 
-function gameUpdate(app) {
+function gameUpdate(delta, app) {
     console.log(state['mode'])
     if (state['mode'] == 'menu') {
-        menuUpdate(app)
+        menuUpdate(delta, app)
     }
     if (state['mode'] == 'play'){
-        playUpdate(app);
+        playUpdate(delta, app);
     }
 }
 
