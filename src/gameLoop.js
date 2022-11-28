@@ -1,10 +1,11 @@
 import { Sprite, Text, Texture } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
-import img from '../public/assets/wing.png'
+import playerImg from '../public/assets/wing.png'
+import groundImg from '../public/assets/grass.png'
 import { Player } from './players.ts';
 
 // Creating the player components
-const graphic = Sprite.from(img);
+const graphic = Sprite.from(playerImg);
 graphic.width = 100;
 graphic.height = 100;
 const hitbox = new Sprite(Texture.WHITE);
@@ -66,7 +67,8 @@ function playUpdate(delta, app){
 
         state['player'].setPosition(80, 50);
 
-        const ground = new Sprite()
+        const ground = new Sprite(groundImg);
+        app.stage.addChild(ground);
 
         state['modeStarted'] = 1;
     }
