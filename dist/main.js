@@ -64,6 +64,28 @@ eval("\n\nvar has = Object.prototype.hasOwnProperty\n  , prefix = '~';\n\n/**\n 
 
 /***/ }),
 
+/***/ "./public/assets/grass.png":
+/*!*********************************!*\
+  !*** ./public/assets/grass.png ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + \"913ed0820c750a1b30b5c9682fb16c6b.png\");\n\n//# sourceURL=webpack://flappybird/./public/assets/grass.png?");
+
+/***/ }),
+
+/***/ "./public/assets/wing.png":
+/*!********************************!*\
+  !*** ./public/assets/wing.png ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + \"261cd139159b803fe64f5eab2072144b.png\");\n\n//# sourceURL=webpack://flappybird/./public/assets/wing.png?");
+
+/***/ }),
+
 /***/ "./node_modules/punycode/punycode.js":
 /*!*******************************************!*\
   !*** ./node_modules/punycode/punycode.js ***!
@@ -184,6 +206,17 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 
 /***/ }),
 
+/***/ "./src/players.ts":
+/*!************************!*\
+  !*** ./src/players.ts ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Player\": () => (/* binding */ Player)\n/* harmony export */ });\nvar Player = /** @class */ (function () {\n    function Player(graphic, hitbox) {\n        this.graphic = graphic;\n        this.hitbox = hitbox;\n        this.graphic.anchor.set(.5);\n        this.hitbox.anchor.set(.5);\n        this.graphic.x = this.hitbox.x;\n        this.graphic.y = this.hitbox.y;\n        this.graphic.rotation = this.hitbox.rotation;\n        this.velocity = 0;\n    }\n    Player.prototype.updatePhysics = function (delta, gravity, maxVelocity) {\n        this.velocity += gravity * delta;\n        this.velocity = Math.min(Math.abs(this.velocity), maxVelocity) * Math.sign(this.velocity);\n        this.incrementPosition(0, this.velocity * delta);\n    };\n    Player.prototype.setVelocity = function (velocity) {\n        this.velocity = velocity;\n    };\n    Player.prototype.setPosition = function (x, y) {\n        this.graphic.x = x;\n        this.hitbox.x = x;\n        this.graphic.y = y;\n        this.hitbox.y = y;\n    };\n    Player.prototype.incrementPosition = function (x, y) {\n        this.graphic.x += x;\n        this.hitbox.x += x;\n        this.graphic.y += y;\n        this.hitbox.y += y;\n    };\n    Player.prototype.setRotation = function (angle) {\n        this.graphic.rotation = angle;\n        this.hitbox.rotation = angle;\n    };\n    Player.prototype.incrementRotation = function (angle) {\n        this.graphic.rotation += angle;\n        this.hitbox.rotation += angle;\n    };\n    return Player;\n}());\n\n\n\n//# sourceURL=webpack://flappybird/./src/players.ts?");
+
+/***/ }),
+
 /***/ "./node_modules/url/url.js":
 /*!*********************************!*\
   !*** ./node_modules/url/url.js ***!
@@ -206,6 +239,17 @@ eval("\n\nmodule.exports = {\n  isString: function(arg) {\n    return typeof(arg
 
 /***/ }),
 
+/***/ "./src/gameLoop.js":
+/*!*************************!*\
+  !*** ./src/gameLoop.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"gameUpdate\": () => (/* binding */ gameUpdate)\n/* harmony export */ });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/index.mjs\");\n/* harmony import */ var _styles_textStyles_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/textStyles.js */ \"./src/styles/textStyles.js\");\n/* harmony import */ var _public_assets_wing_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../public/assets/wing.png */ \"./public/assets/wing.png\");\n/* harmony import */ var _public_assets_grass_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../public/assets/grass.png */ \"./public/assets/grass.png\");\n/* harmony import */ var _players_ts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./players.ts */ \"./src/players.ts\");\n\n\n\n\n\n\n// Creating the player components\nconst graphic = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(_public_assets_wing_png__WEBPACK_IMPORTED_MODULE_2__[\"default\"]);\ngraphic.width = 100;\ngraphic.height = 100;\nconst hitbox = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.WHITE);\nhitbox.width = 80;\nhitbox.height = 80;\n\n// Create state variables\nlet state = {\n    mode: 'menu', //menu, game, dead\n    modeStarted: 0, //0 if mode not run before\n    inGameState: {\n        currentScore: 0,\n        distance: 0,\n    },\n    history: {\n        highScore: 0,\n        maxDistance: 0,\n    },\n    player: new _players_ts__WEBPACK_IMPORTED_MODULE_4__.Player(graphic, hitbox),\n}\n\n\n\nfunction menuUpdate(delta, app) {\n    if (!state['modeStarted']){\n        app.stage.removeChildren();\n        const clickableArea = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite();\n        clickableArea.width = app.screen.width;\n        clickableArea.height = app.screen.height;\n        clickableArea.interactive = true;\n        clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = 0;});\n        app.stage.addChild(clickableArea)\n\n        const richText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('Flappy Bird Clone', _styles_textStyles_js__WEBPACK_IMPORTED_MODULE_1__.titleTextStyle);\n        richText.x = 50;\n        richText.y = 220;\n        \n        app.stage.addChild(richText);\n\n        state['modeStarted'] = 1;\n    }\n}\n\nfunction playUpdate(delta, app){\n    if (!state['modeStarted']){\n        app.stage.removeChildren();\n        const clickableArea = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite();\n        clickableArea.width = app.screen.width;\n        clickableArea.height = app.screen.height;\n        clickableArea.interactive = true;\n        app.stage.addChild(clickableArea)\n\n        clickableArea.on('pointerdown', ()=>{ state['player'].setVelocity(-10); });\n\n\n        state['player'].setVelocity(0);\n        app.stage.addChild(state['player'].hitbox);\n        app.stage.addChild(state['player'].graphic);\n\n        state['player'].setPosition(80, 50);\n\n        const ground = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite(_public_assets_grass_png__WEBPACK_IMPORTED_MODULE_3__[\"default\"]);\n        app.stage.addChild(ground);\n\n        state['modeStarted'] = 1;\n    }\n    state['player'].updatePhysics(delta, .5, 25);\n}\n\nfunction gameUpdate(delta, app) {\n    console.log(state['mode'])\n    if (state['mode'] == 'menu') {\n        menuUpdate(delta, app)\n    }\n    if (state['mode'] == 'play'){\n        playUpdate(delta, app);\n    }\n}\n\n\n\n//# sourceURL=webpack://flappybird/./src/gameLoop.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -213,7 +257,18 @@ eval("\n\nmodule.exports = {\n  isString: function(arg) {\n    return typeof(arg
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/index.mjs\");\n/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/style.css */ \"./src/styles/style.css\");\nObject(function webpackMissingModule() { var e = new Error(\"Cannot find module './gameLoop.js'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }());\n\n\n\n\n// Initialize PixiJS aplication\nfunction initialize(){\n    const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({\n        background: '#1099bb',\n        antialias: true,\n        autoDensity: true,\n        width: 600,\n        height: 600,\n       });\n   \n   const gameArea = document.getElementById('game-area')\n\n   if (gameArea == null){\n       return;\n   }\n    \n   gameArea.appendChild(app.view);\n   \n\n   app.ticker.add( ((delta)=>Object(function webpackMissingModule() { var e = new Error(\"Cannot find module './gameLoop.js'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(delta, app)) )\n}\n\n\ninitialize();\n\n//# sourceURL=webpack://flappybird/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/index.mjs\");\n/* harmony import */ var _styles_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/style.css */ \"./src/styles/style.css\");\n/* harmony import */ var _gameLoop_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gameLoop.js */ \"./src/gameLoop.js\");\n\n\n\n\n// Initialize PixiJS aplication\nfunction initialize(){\n    const app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Application({\n        background: '#1099bb',\n        antialias: true,\n        autoDensity: true,\n        width: 600,\n        height: 600,\n       });\n   \n   const gameArea = document.getElementById('game-area')\n\n   if (gameArea == null){\n       return;\n   }\n    \n   gameArea.appendChild(app.view);\n   \n\n   app.ticker.add( ((delta)=>(0,_gameLoop_js__WEBPACK_IMPORTED_MODULE_2__.gameUpdate)(delta, app)) )\n}\n\n\ninitialize();\n\n//# sourceURL=webpack://flappybird/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/styles/textStyles.js":
+/*!**********************************!*\
+  !*** ./src/styles/textStyles.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"titleTextStyle\": () => (/* binding */ titleTextStyle)\n/* harmony export */ });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/index.mjs\");\n\n\nconst titleTextStyle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({\n    fontFamily: 'Arial',\n    fontSize: 36,\n    fontStyle: 'italic',\n    fontWeight: 'bold',\n    fill: ['#ffffff', '#00ff99'], // gradient\n    stroke: '#4a1850',\n    strokeThickness: 5,\n    dropShadow: true,\n    dropShadowColor: '#000000',\n    dropShadowBlur: 4,\n    dropShadowAngle: Math.PI / 6,\n    dropShadowDistance: 6,\n    wordWrap: true,\n    wordWrapWidth: 440,\n    lineJoin: 'round',\n});\n\n\n\n//# sourceURL=webpack://flappybird/./src/styles/textStyles.js?");
 
 /***/ }),
 
@@ -4167,6 +4222,26 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			if (!module.children) module.children = [];
 /******/ 			return module;
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */

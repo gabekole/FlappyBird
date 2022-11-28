@@ -3,6 +3,8 @@ import { titleTextStyle } from './styles/textStyles.js'
 import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
 import { Player } from './players.ts';
+import constants from './constants.js'
+
 
 // Creating the player components
 const graphic = Sprite.from(playerImg);
@@ -67,7 +69,12 @@ function playUpdate(delta, app){
 
         state['player'].setPosition(80, 50);
 
-        const ground = new Sprite(groundImg);
+        const ground = Sprite.from(groundImg);
+        ground.width = constants['gameWidth'];
+        ground.height = 100;
+        ground.anchor.set(0,0);
+        ground.x = 0;
+        ground.y = constants['gameHeight']-50;
         app.stage.addChild(ground);
 
         state['modeStarted'] = 1;
