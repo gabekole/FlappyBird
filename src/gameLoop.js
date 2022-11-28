@@ -131,6 +131,7 @@ function deadUpdate(delta, app) {
         state['player'].updatePhysics(delta, .5, 25);
 
         if (boxCollides(state['player'].hitbox, ground)){
+            state['player'].setVelocity(.1);
             state['inGameState']['onGround'] = true;
             console.log('collideGround');
         }
