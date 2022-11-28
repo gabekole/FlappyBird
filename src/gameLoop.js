@@ -1,6 +1,6 @@
 import { Sprite, Text, Texture } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
-import { boxCollides } from './collision.ts'
+import { boxCollides, pipeCollides } from './collision.ts'
 import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
 import pipeImg from '../public/assets/pipe.png'
@@ -51,11 +51,7 @@ function menuUpdate(delta, app) {
         clickableArea.interactive = true;
         clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = 0;});
         app.stage.addChild(clickableArea)
-        const p = new Pipe(Texture.from(pipeImg))
-        p.topHalf.x = 300;
-        p.topHalf.y = 500;
-        app.stage.addChild(p.topHalf);
-        app.stage.addChild(p.bottomHalf);
+        
 
         const richText = new Text('Flappy Bird Clone', titleTextStyle);
         richText.x = 50;
@@ -68,6 +64,7 @@ function menuUpdate(delta, app) {
 }
 
 
+const p = new Pipe(Texture.from(pipeImg), 2)
 function playUpdate(delta, app) {
     if (!state['modeStarted']){
         app.stage.removeChildren();
@@ -76,6 +73,10 @@ function playUpdate(delta, app) {
         clickableArea.height = app.screen.height;
         clickableArea.interactive = true;
         app.stage.addChild(clickableArea)
+
+        p.setGapLocation(200);
+        app.stage.addChild(p.topHalf);
+        app.stage.addChild(p.bottomHalf);
 
         clickableArea.on('pointerdown', ()=>{ state['player'].setVelocity(-10); });
 
@@ -91,6 +92,12 @@ function playUpdate(delta, app) {
         state['modeStarted'] = 1;
     }
     state['player'].updatePhysics(delta, .5, 25);
+
+    p.updatePosition(delta);
+
+    if ( pipeCollides(state['player'].hitbox, p)){
+        console.log('collidePipe')
+    }
 
     if (boxCollides(state['player'].hitbox, ground)){
         state['mode'] = 'dead';

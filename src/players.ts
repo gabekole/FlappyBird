@@ -29,7 +29,6 @@ class Player {
 
         this.graphic.rotation = rotation;
         this.hitbox.rotation = rotation;
-        console.log(this.velocity, this.graphic.rotation)
 
         this.incrementPosition(0, this.velocity * delta);
     }
