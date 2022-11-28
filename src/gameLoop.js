@@ -3,15 +3,17 @@ import { titleTextStyle } from './styles/textStyles.js'
 import { boxCollides } from './collision.ts'
 import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
-import { Player } from './players.ts';
+import pipeImg from '../public/assets/pipe.png'
+import { Player } from './players.ts'
 import constants from './constants.js'
+import { Pipe } from './pipe.ts'
 
 
 // Creating the player components
 const graphic = Sprite.from(playerImg);
 graphic.width = 100;
 graphic.height = 100;
-const hitbox = new Sprite(Texture.WHITE);
+const hitbox = new Sprite();
 hitbox.width = 65;
 hitbox.height = 75;
 
@@ -49,6 +51,11 @@ function menuUpdate(delta, app) {
         clickableArea.interactive = true;
         clickableArea.on('pointerdown', ()=>{console.log('play'); state['mode'] = 'play', state['modeStarted'] = 0;});
         app.stage.addChild(clickableArea)
+        const p = new Pipe(Texture.from(pipeImg))
+        p.topHalf.x = 300;
+        p.topHalf.y = 500;
+        app.stage.addChild(p.topHalf);
+        app.stage.addChild(p.bottomHalf);
 
         const richText = new Text('Flappy Bird Clone', titleTextStyle);
         richText.x = 50;
@@ -73,11 +80,11 @@ function playUpdate(delta, app) {
         clickableArea.on('pointerdown', ()=>{ state['player'].setVelocity(-10); });
 
 
-        state['player'].setVelocity(0);
+        state['player'].setVelocity(-5);
         app.stage.addChild(state['player'].hitbox);
         app.stage.addChild(state['player'].graphic);
 
-        state['player'].setPosition(80, 50);
+        state['player'].setPosition(140, 50);
 
         app.stage.addChild(ground);
 

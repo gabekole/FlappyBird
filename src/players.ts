@@ -25,7 +25,7 @@ class Player {
 
         this.velocity = Math.min(Math.abs(this.velocity), maxVelocity) * Math.sign(this.velocity); 
 
-        const rotation = (this.velocity/22 + 5*this.graphic.rotation)/6
+        const rotation = (this.velocity/22 + 9*this.graphic.rotation)/10
 
         this.graphic.rotation = rotation;
         this.hitbox.rotation = rotation;
