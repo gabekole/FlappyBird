@@ -64,7 +64,9 @@ function playUpdate(delta, app){
         app.stage.addChild(state['player'].hitbox);
         app.stage.addChild(state['player'].graphic);
 
-        state['player'].setPosition(50, 50);
+        state['player'].setPosition(80, 50);
+
+        const ground = new Sprite()
 
         state['modeStarted'] = 1;
     }
