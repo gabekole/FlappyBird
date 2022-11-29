@@ -1,6 +1,6 @@
 import { Application, Sprite } from 'pixi.js'
 import './styles/style.css'
-import { gameUpdate } from './gameLoop.js'
+import { createGameUpdate } from './gameLoop.js'
 import constants from './constants.js'
 
 // Initialize PixiJS aplication
@@ -22,6 +22,7 @@ function initialize(){
    gameArea.appendChild(app.view);
    
 
+   const gameUpdate = createGameUpdate(app);
    app.ticker.add( ((delta)=>gameUpdate(delta, app)) )
 }
 
