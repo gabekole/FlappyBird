@@ -5,7 +5,7 @@ import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
 import pipeImg from '../public/assets/pipe.png'
 import { Player } from './players'
-import constants from './constants.js'
+import constants from './constants'
 import { Pipe } from './pipe'
 import state from './gameState'
 

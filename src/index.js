@@ -1,7 +1,7 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application } from 'pixi.js'
 import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
-import constants from './constants.js'
+import constants from './constants'
 
 // Initialize PixiJS aplication
 function initialize(){
