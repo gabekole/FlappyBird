@@ -8,10 +8,7 @@ class Pipe {
     private topHalf: Sprite;
     private bottomHalf: Sprite;
 
-    private moveSpeed: number;
-
     constructor(graphic : Texture, moveSpeed : number){
-        this.moveSpeed = moveSpeed;
 
         this.topHalf = new Sprite(graphic);
         this.bottomHalf = new Sprite(graphic);
@@ -35,8 +32,8 @@ class Pipe {
     }
 
     public updatePosition(delta : number){
-        this.bottomHalf.x -= this.moveSpeed*delta;
-        this.topHalf.x -= this.moveSpeed*delta;
+        this.bottomHalf.x -= constants['moveSpeed']*delta;
+        this.topHalf.x -= constants['moveSpeed']*delta;
     }
 
     public getTopPipeBounds(){
