@@ -5,10 +5,10 @@ const width = 80;
 const gap = 200;
 
 class Pipe {
-    private topHalf: Sprite;
-    private bottomHalf: Sprite;
+    public topHalf: Sprite;
+    public bottomHalf: Sprite;
 
-    constructor(graphic : Texture, moveSpeed : number){
+    constructor(graphic : Texture){
 
         this.topHalf = new Sprite(graphic);
         this.bottomHalf = new Sprite(graphic);

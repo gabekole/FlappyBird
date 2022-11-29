@@ -1,15 +1,15 @@
-import { Sprite, Text, Texture, Container } from 'pixi.js'
+import { Sprite, Text, Texture, Container, Application } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
-import { boxCollides, pipeCollides } from './collision.ts'
-import playerImg from '../public/assets/wing.png'
-import groundImg from '../public/assets/grass.png'
-import pipeImg from '../public/assets/pipe.png'
-import { Player } from './players.ts'
+import { boxCollides, pipeCollides } from './collision'
+import * as playerImg from '../public/assets/wing.png'
+import * as groundImg from '../public/assets/grass.png'
+import * as pipeImg from '../public/assets/pipe.png'
+import { Player } from './players'
 import constants from './constants.js'
-import { Pipe } from './pipe.ts'
-import state from './gameState.ts'
+import { Pipe } from './pipe'
+import state from './gameState'
 
-function getGameUpdateFuncs(app) {
+function getGameUpdateFuncs(app : Application) {
     // Create container for pipes
     const backLayer = new Container();
 
@@ -34,13 +34,14 @@ function getGameUpdateFuncs(app) {
     const pipeTexture = Texture.from(pipeImg);
 
 
-    let menuClick = (event)=>{
+    let menuClick = (event : any)=>{
         console.log('menuClick');
+        console.log(event, typeof(event));
         state['mode'] = 'play';
         state['modeStarted'] = false;
     }
 
-    function menuUpdate(delta) {
+    function menuUpdate(delta : number) {
         if (!state['modeStarted']){
             app.stage.removeChildren();
             backLayer.removeChildren();
@@ -64,15 +65,15 @@ function getGameUpdateFuncs(app) {
         }
     }
 
-    let pipes = [];
-    let playClick = (event) => {
+    let pipes : Pipe[] = [];
+    let playClick = (event : any) => {
         console.log('playClick');
         player.setVelocity(-10);
     }
     const scoreText = new Text('0', titleTextStyle);
     scoreText.x = 300 - (scoreText.width/2.0);
     scoreText.y = 50;
-    function playUpdate(delta) {
+    function playUpdate(delta : number) {
         if (!state['modeStarted']){
             state['inGameState']['totalDistance'] = 0;
             state['inGameState']['distanceSinceSpawn'] = 0
@@ -139,12 +140,12 @@ function getGameUpdateFuncs(app) {
         });
     }
 
-    let deathClick = (event) => {
+    let deathClick = (event : any) => {
         console.log('deathClick');
         state['mode'] = 'play';
-        state['modeStarted'] = 0;
+        state['modeStarted'] = false;
     }
-    function deadUpdate(delta) {
+    function deadUpdate(delta : number) {
         if (!state['modeStarted']){
             const clickableArea = app.stage.getChildAt(0);
             clickableArea.removeAllListeners();
@@ -159,7 +160,7 @@ function getGameUpdateFuncs(app) {
             
             app.stage.addChild(richText);
         
-            state['modeStarted'] = 1;
+            state['modeStarted'] = true;
         }
 
         if(!state['inGameState']['onGround']){
@@ -178,9 +179,9 @@ function getGameUpdateFuncs(app) {
 }
 
 
-function createGameUpdate(app) {
+function createGameUpdate(app : Application) {
     let [menuUpdate, playUpdate, deadUpdate] = getGameUpdateFuncs(app);
-    function gameUpdate(delta) {
+    function gameUpdate(delta : number) {
         if (state['mode'] == 'menu') {
             menuUpdate(delta)
         }
