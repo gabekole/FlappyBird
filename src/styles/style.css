@@ -1,0 +1,15 @@
+body {
+    padding: 0;
+    margin: auto;
+    overflow: hidden;
+    margin: auto;
+}
+
+#game-area {
+    padding: 0;
+    margin: 0;
+}
+
+canvas {
+    display: block;
+}
