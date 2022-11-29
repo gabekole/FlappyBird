@@ -49,7 +49,7 @@ let state = {
 
 
 let menuClick = (event)=>{
-    console.log('play');
+    console.log('menuClick');
     state['mode'] = 'play';
     state['modeStarted'] = false;
 }
@@ -80,6 +80,7 @@ function menuUpdate(delta, app) {
 
 let pipes = [];
 let playClick = (event) => {
+    console.log('playClick');
     state['player'].setVelocity(-10);
 }
 const scoreText = new Text('0', titleTextStyle);
@@ -91,13 +92,14 @@ function playUpdate(delta, app) {
         state['inGameState']['distanceSinceSpawn'] = 0
         app.stage.removeChildren();
         backLayer.removeChildren();
-        app.stage.addChild(backLayer);
         const clickableArea = new Sprite();
         clickableArea.width = app.screen.width;
-        app.stage.addChild(scoreText);
         clickableArea.height = app.screen.height;
         clickableArea.interactive = true;
         app.stage.addChild(clickableArea)
+
+        app.stage.addChild(backLayer);
+        app.stage.addChild(scoreText);
         document.removeEventListener('keypress', deathClick);
         document.removeEventListener('keypress', menuClick);
         clickableArea.on('pointerdown', playClick);
@@ -152,6 +154,7 @@ function playUpdate(delta, app) {
 }
 
 let deathClick = (event) => {
+    console.log('deathClick');
     state['mode'] = 'play';
     state['modeStarted'] = 0;
 }
@@ -160,7 +163,7 @@ function deadUpdate(delta, app) {
         const clickableArea = app.stage.getChildAt(0);
         clickableArea.removeAllListeners();
 
-        clickableArea.on('pointerdown', deathClick)
+        clickableArea.on('pointerdown', deathClick);
 
         document.removeEventListener('keypress', playClick);
         document.addEventListener('keypress', deathClick);
