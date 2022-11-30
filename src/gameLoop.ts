@@ -128,6 +128,7 @@ function getGameUpdateFuncs(app : Application) {
             console.log('collideGround');
         }
 
+        // Check for pipe collision and update positions
         pipes.forEach((pipe) => {
             if ( pipeCollides(player.hitbox, pipe)){
                 console.log('collidePipe')
@@ -138,6 +139,20 @@ function getGameUpdateFuncs(app : Application) {
             }
             pipe.updatePosition(delta);
         });
+
+        // Remove pipes that are offscreen
+        pipes = pipes.filter((pipe) => {
+            if( pipe.bottomHalf.getBounds().right < 0){
+                app.stage.removeChild(pipe.bottomHalf);
+                app.stage.removeChild(pipe.topHalf);
+                pipe.bottomHalf.destroy();
+                pipe.topHalf.destroy();
+                return false;
+            }
+            return true;
+        })
+
+
     }
 
     let deathClick = (event : any) => {
