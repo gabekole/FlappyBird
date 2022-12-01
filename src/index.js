@@ -9,6 +9,10 @@ import constants from './constants'
 // Menu Rework (HighScore)
 // Pre-Play scene  
 // Pipe texture vertical tiling
+// Difficulty scaling
+// Player skins / Background skins that can be set in menu
+// Coins to collect to purchase player skins
+// Boss battle?
 
 // Initialize PixiJS aplication
 function initialize(){
