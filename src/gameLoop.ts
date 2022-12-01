@@ -1,13 +1,18 @@
-import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite } from 'pixi.js'
+import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, IPointData } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
 import { boxCollides, pipeCollides } from './collision'
-import playerImg from '../public/assets/wing.png'
-import groundImg from '../public/assets/grass.png'
-import pipeImg from '../public/assets/pipe.png'
 import { Player } from './players'
 import constants from './constants'
 import { Pipe } from './pipe'
 import state from './gameState'
+
+import playerImg from '../public/assets/wing.png'
+import groundImg from '../public/assets/grass.png'
+import pipeImg from '../public/assets/pipe.png'
+import backgroundImg from '../public/assets/background/layers/parallax-mountain-bg.png'
+import mountainsImg from '../public/assets/background/layers/parallax-mountain-mountains.png'
+import treesImg from '../public/assets/background/layers/parallax-mountain-trees.png'
+import foregroundTreesImg from '../public/assets/background/layers/parallax-mountain-foreground-trees.png'
 
 function getGameUpdateFuncs(app : Application) {
     // Create container for pipes
@@ -25,16 +30,61 @@ function getGameUpdateFuncs(app : Application) {
     // Create ground sprite
     const gnd = new BaseTexture(groundImg);
     const gndTex = new Texture(gnd, new Rectangle(0, 0, 512, 100));
-
-
     const ground = new TilingSprite(gndTex);
-    
-
     ground.width = constants['gameWidth'];
-    ground.height = 50;
+    ground.height = 10;
     ground.anchor.set(0,1);
     ground.x = 0;
     ground.y = constants['gameHeight'];
+
+    // Create background
+    const backgroundTexture = Texture.from(backgroundImg);
+    const background = new TilingSprite(backgroundTexture, constants['gameWidth'], constants['gameHeight']);
+
+    background.once('added', ()=>{
+        const scale = Math.max(constants['gameWidth']/backgroundTexture.width, 
+                                constants['gameHeight']/backgroundTexture.height)
+
+        background.tileScale = {x: scale, y: scale};
+    });
+
+    const mountainsTexture = Texture.from(mountainsImg);
+    const mountains = new TilingSprite(mountainsTexture);
+    mountains.anchor.set(0,1);
+    mountains.x = 0;
+    mountains.y = constants['gameHeight'];
+    mountains.width = constants['gameWidth'];
+    mountains.height = constants['gameHeight']/2;
+    mountains.tileScale = {x: 2, y:4};
+
+    const treesTexture = Texture.from(treesImg);
+    const trees = new TilingSprite(treesTexture);
+    trees.anchor.set(0,1)
+    trees.y = constants['gameHeight'];
+    trees.width = constants['gameWidth'];
+
+    trees.once('added', ()=>{
+        const treeScaleFactor = 4;
+        const treeHeight = treesTexture.height;
+
+        trees.height = treeHeight*treeScaleFactor;
+        trees.tileScale = {x: treeScaleFactor, y: treeScaleFactor};
+    });
+
+    const foregroundTreesTexture = Texture.from(foregroundTreesImg);
+    const foregroundTrees = new TilingSprite(foregroundTreesTexture);
+    foregroundTrees.anchor.set(0,1)
+    foregroundTrees.y = constants['gameHeight'];
+    foregroundTrees.width = constants['gameWidth'];
+
+    foregroundTrees.once('added', ()=>{
+        const foregroundTreescaleFactor = 4;
+        const treeHeight = foregroundTreesTexture.height;
+
+        foregroundTrees.height = treeHeight*foregroundTreescaleFactor;
+        foregroundTrees.tileScale = {x: foregroundTreescaleFactor, y: foregroundTreescaleFactor};
+    });
+
 
     //Create pipe texture
     const pipeTexture = Texture.from(pipeImg);
@@ -90,6 +140,11 @@ function getGameUpdateFuncs(app : Application) {
             clickableArea.height = app.screen.height;
             clickableArea.interactive = true;
             app.stage.addChild(clickableArea)
+
+            app.stage.addChild(background);
+            app.stage.addChild(mountains);
+            app.stage.addChild(trees);
+            app.stage.addChild(foregroundTrees);
 
             app.stage.addChild(backLayer);
             app.stage.addChild(scoreText);
@@ -159,6 +214,10 @@ function getGameUpdateFuncs(app : Application) {
         })
 
         ground.tilePosition.x -= delta*constants['moveSpeed'];
+        background.tilePosition.x -= delta*.05;
+        mountains.tilePosition.x += delta*.1;
+        trees.tilePosition.x -= delta*.3;
+        foregroundTrees.tilePosition.x -= delta*.8;
     }
 
     let deathClick = (event : any) => {
