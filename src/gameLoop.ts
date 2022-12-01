@@ -1,4 +1,4 @@
-import { Sprite, Text, Texture, Container, Application } from 'pixi.js'
+import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite } from 'pixi.js'
 import { titleTextStyle } from './styles/textStyles.js'
 import { boxCollides, pipeCollides } from './collision'
 import playerImg from '../public/assets/wing.png'
@@ -22,8 +22,14 @@ function getGameUpdateFuncs(app : Application) {
     hitbox.height = constants['player']['hitboxHeight'];
     const player = new Player(graphic, hitbox);
 
-    // Create ground sprite 
-    const ground = Sprite.from(groundImg);
+    // Create ground sprite
+    const gnd = new BaseTexture(groundImg);
+    const gndTex = new Texture(gnd, new Rectangle(0, 0, 512, 100));
+
+
+    const ground = new TilingSprite(gndTex);
+    
+
     ground.width = constants['gameWidth'];
     ground.height = 50;
     ground.anchor.set(0,1);
@@ -152,7 +158,7 @@ function getGameUpdateFuncs(app : Application) {
             return true;
         })
 
-
+        ground.tilePosition.x -= delta*constants['moveSpeed'];
     }
 
     let deathClick = (event : any) => {
