@@ -11,7 +11,7 @@ const constantValues = {
         height: 60,
         width: 70,
         hitboxHeight: 40,
-        hitboxWidth: 50,
+        hitboxWidth: 40,
     }
 };
 
