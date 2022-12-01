@@ -16,8 +16,7 @@ function pipeCollides(spriteOne : Sprite, pipe : Pipe)
 
     let collidesBottom = spriteBounds.x + spriteBounds.width > bottomPipeBounds.x &&
                         spriteBounds.x < bottomPipeBounds.x + bottomPipeBounds.width && 
-                        spriteBounds.y + spriteBounds.height > bottomPipeBounds.y &&
-                        spriteBounds.y < bottomPipeBounds.y + bottomPipeBounds.height;
+                        spriteBounds.y + spriteBounds.height > bottomPipeBounds.y;
 
     let collidesTop = spriteBounds.x + spriteBounds.width > topPipeBounds.x &&
                         spriteBounds.x < topPipeBounds.x + topPipeBounds.width && 
