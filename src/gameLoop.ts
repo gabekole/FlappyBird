@@ -213,11 +213,11 @@ function getGameUpdateFuncs(app : Application) {
             return true;
         })
 
+        background.tilePosition.x -= delta*.08;
+        mountains.tilePosition.x -= delta*.2;
+        trees.tilePosition.x -= delta*.6;
+        foregroundTrees.tilePosition.x -= delta*1.2;
         ground.tilePosition.x -= delta*constants['moveSpeed'];
-        background.tilePosition.x -= delta*.05;
-        mountains.tilePosition.x += delta*.1;
-        trees.tilePosition.x -= delta*.3;
-        foregroundTrees.tilePosition.x -= delta*.8;
     }
 
     let deathClick = (event : any) => {
