@@ -1,12 +1,12 @@
 import { Texture, Sprite } from 'pixi.js'
 import constants from './constants'
 
-const width = 80;
-const gap = 200;
 
 class Pipe {
     public topHalf: Sprite;
     public bottomHalf: Sprite;
+    public width = 80;
+    public gap = 200;
 
     constructor(graphic : Texture){
 
@@ -19,16 +19,16 @@ class Pipe {
 
         this.bottomHalf.height = 600;
         this.topHalf.height = 600;
-        this.topHalf.width = width;
-        this.bottomHalf.width = width;
+        this.topHalf.width = this.width;
+        this.bottomHalf.width = this.width;
 
-        this.bottomHalf.x = constants['gameWidth'] + width;
-        this.topHalf.x = constants['gameWidth'] + width;
+        this.bottomHalf.x = constants['gameWidth'] + this.width;
+        this.topHalf.x = constants['gameWidth'] + this.width;
     }
 
     public setGapLocation(y: number){
         this.topHalf.y = y;
-        this.bottomHalf.y = y + gap;
+        this.bottomHalf.y = y + this.gap;
     }
 
     public updatePosition(delta : number){

@@ -94,6 +94,8 @@ function getGameUpdateFuncs(app : Application) {
             clickableArea.interactive = true;
             app.stage.addChild(clickableArea)
 
+            background.resetBackgroundPosition();
+            ground.tilePosition.x = 0;
             app.stage.addChild(background);
 
             app.stage.addChild(backLayer);
@@ -123,7 +125,7 @@ function getGameUpdateFuncs(app : Application) {
 
         if(state['inGameState']['distanceSinceSpawn'] > constants['pipes']['distancePerSpawn']){
             const p = new Pipe(pipeTexture)
-            p.setGapLocation((Math.random()*250+10))
+            p.setGapLocation(p.width + Math.random()*(constants['gameHeight'] - p.gap - 2*p.width));
             backLayer.addChild(p.topHalf);
             backLayer.addChild(p.bottomHalf)
             pipes.push(p);

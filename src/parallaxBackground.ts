@@ -32,7 +32,7 @@ class parallaxBackground extends Container {
         this.farMountain.x = 0;
         this.farMountain.y = constants['gameHeight'];
         this.farMountain.setWidth(constants['gameWidth']);
-        this.farMountain.setHeight(constants['gameHeight']/2);
+        this.farMountain.setHeight(constants['gameHeight']*(9/20));
 
         const mountainsTexture = Texture.from(mountainsImg);
         this.mountains = new HorizontalTilingSprite(mountainsTexture);
@@ -73,6 +73,13 @@ class parallaxBackground extends Container {
         this.foregroundTrees.tilePosition.x -= delta*1.2;
     }
 
+    public resetBackgroundPosition(){
+        this.background.tilePosition.x = 0;
+        this.farMountain.tilePosition.x = 0;
+        this.mountains.tilePosition.x = 0;
+        this.trees.tilePosition.x = 0;
+        this.foregroundTrees.tilePosition.x = 0;
+    }
 
 }
 
