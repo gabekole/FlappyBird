@@ -3,6 +3,13 @@ import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
 import constants from './constants'
 
+// TODO 
+// Player animations
+// Sound
+// Menu Rework (HighScore)
+// Pre-Play scene  
+// Pipe texture vertical tiling
+
 // Initialize PixiJS aplication
 function initialize(){
     const app = new Application({
