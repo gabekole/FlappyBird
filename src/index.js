@@ -1,4 +1,4 @@
-import { Application } from 'pixi.js'
+import { Application, autoDetectRenderer } from 'pixi.js'
 import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
 import constants from './constants'
