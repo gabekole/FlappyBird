@@ -39,7 +39,7 @@ function initialize(){
         let delta = now - lastTime;
         
         renderer.render(stage);
-        requestAnimationFrame(()=>{renderUpdate(delta)});
+        setTimeout(()=>{requestAnimationFrame(()=>{renderUpdate(delta)})}, 20);
     }
     requestAnimationFrame(()=>{renderUpdate(performance.now)});
 
