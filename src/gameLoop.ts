@@ -1,7 +1,7 @@
 import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
 
 import { titleTextStyle } from './styles/textStyles.js'
-import { boxCollides, pipeCollides } from './collision'
+import { boxCollides, floorCollides, pipeCollides } from './collision'
 import { Player } from './players'
 import constants from './constants'
 import { Pipe } from './pipe'
@@ -133,7 +133,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['distanceSinceSpawn'] -= constants['pipes']['distancePerSpawn'];
         }
 
-        if (boxCollides(player.hitbox, ground)){
+        if (floorCollides(player.hitbox, ground)){
             state['mode'] = 'dead';
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;

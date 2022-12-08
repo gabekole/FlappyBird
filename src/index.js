@@ -37,9 +37,7 @@ function initialize(){
     function renderUpdate(lastTime){
         let now = performance.now();
         let delta = now - lastTime;
-
-        console.log('render');
-
+        
         renderer.render(stage);
         requestAnimationFrame(()=>{renderUpdate(delta)});
     }
@@ -49,12 +47,11 @@ function initialize(){
         let now = performance.now();
         let delta = now - lastTime;
 
-        console.log('state update');
-
         //Update state
         gameUpdate(delta/15);
 
-        setTimeout(()=>{gameLogic(now)}, 10);
+        now = performance.now();
+        setTimeout(()=>{gameLogic(now)}, 20-delta);
     }
     gameLogic(performance.now());
 
