@@ -71,6 +71,9 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             stage.addChild(richText);
 
             state['modeStarted'] = true;
+
+            // state['mode'] = 'play';
+            // state['modeStarted'] = false;
         }
     }
 
@@ -82,10 +85,14 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     const scoreText = new Text('0', titleTextStyle);
     scoreText.x = 300 - (scoreText.width/2.0);
     scoreText.y = 50;
-    function playUpdate(delta : number) {
+
+    let idleClick = (event : any) => {
+        console.log('idleClick');
+        state['modeStarted'] = false;
+        state['mode'] = 'play';
+    }
+    function idleUpdate(delta : number) {
         if (!state['modeStarted']){
-            state['inGameState']['totalDistance'] = 0;
-            state['inGameState']['distanceSinceSpawn'] = 0
             stage.removeChildren();
             backLayer.removeChildren();
             const clickableArea = new Sprite();
@@ -99,9 +106,46 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             stage.addChild(background);
 
             stage.addChild(backLayer);
-            stage.addChild(scoreText);
+
             document.removeEventListener('keypress', deathClick);
             document.removeEventListener('keypress', menuClick);
+            document.removeEventListener('keypress', playClick);
+
+            clickableArea.on('pointerdown', idleClick);
+            document.addEventListener('keypress', idleClick);
+
+            player.setVelocity(-5);
+            player.setRotation(0);
+            stage.addChild(player.hitbox);
+            stage.addChild(player.graphic);
+
+            player.setPosition(140, .35*constants['gameHeight']);
+
+            stage.addChild(ground);
+
+            state['modeStarted'] = true;
+        }
+        player.undulateUpdate(delta, .35*constants['gameHeight']);
+
+        background.updateBackground(delta);
+        ground.tilePosition.x -= delta*constants['moveSpeed'];
+    }
+
+    function playUpdate(delta : number) {
+        if (!state['modeStarted']){
+            state['inGameState']['totalDistance'] = 0;
+            state['inGameState']['distanceSinceSpawn'] = 0
+
+
+            const clickableArea = stage.getChildAt(0);
+            clickableArea.removeAllListeners();
+
+            stage.addChild(scoreText);
+
+            document.removeEventListener('keypress', deathClick);
+            document.removeEventListener('keypress', menuClick);
+            document.removeEventListener('keypress', idleClick);
+
             clickableArea.on('pointerdown', playClick);
             document.addEventListener('keypress', playClick);
             state['inGameState']['onGround'] = false;
@@ -109,8 +153,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             player.setVelocity(-5);
             stage.addChild(player.hitbox);
             stage.addChild(player.graphic);
-
-            player.setPosition(140, 50);
 
             stage.addChild(ground);
 
@@ -171,7 +213,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
     let deathClick = (event : any) => {
         console.log('deathClick');
-        state['mode'] = 'play';
+        state['mode'] = 'idle';
         state['modeStarted'] = false;
     }
     function deadUpdate(delta : number) {
@@ -204,13 +246,16 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
     }
 
-    return [menuUpdate, playUpdate, deadUpdate];
+    return [menuUpdate, playUpdate, deadUpdate, idleUpdate];
 }
 
 
 function createGameUpdate(stage : Container, renderer: Renderer) {
-    let [menuUpdate, playUpdate, deadUpdate] = getGameUpdateFuncs(stage, renderer);
+    let [menuUpdate, playUpdate, deadUpdate, idleUpdate] = getGameUpdateFuncs(stage, renderer);
     function gameUpdate(delta : number) {
+        if (state['mode'] == 'idle') {
+            idleUpdate(delta);
+        }
         if (state['mode'] == 'menu') {
             menuUpdate(delta)
         }

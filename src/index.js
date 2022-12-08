@@ -19,12 +19,16 @@ function initialize(){
 
     const stage = new Container();
 
+    const renderUpdateTime = 15;
+    const gameUpdateTime = 20;
+
     const renderer = autoDetectRenderer({
         background: '#1099bb',
-        antialias: true,
+        antialias: false,
         autoDensity: true,
         width: constants['gameWidth'],
         height: constants['gameHeight'],
+        hello: true,
     });
 
    const gameArea = document.getElementById('game-area')
@@ -38,11 +42,10 @@ function initialize(){
         let now = performance.now();
         let delta = now - lastTime;
 
-        
         renderer.render(stage);
 
         now = performance.now();
-        setTimeout(()=>{requestAnimationFrame(()=>{renderUpdate(now)})}, 25-delta);
+        setTimeout(()=>{requestAnimationFrame(()=>{renderUpdate(now)})}, renderUpdateTime-delta);
     }
     requestAnimationFrame(()=>{renderUpdate(performance.now)});
 
@@ -50,14 +53,11 @@ function initialize(){
         let now = performance.now();
         let delta = now - lastTime;
 
-        
-        console.log(1/(delta/1000));
-
         //Update state
-        gameUpdate(delta/15);
+        gameUpdate(delta/15.0);
 
         now = performance.now();
-        setTimeout(()=>{gameLogic(now)}, 20-delta);
+        setTimeout(()=>{gameLogic(now)}, gameUpdateTime-delta);
     }
     gameLogic(performance.now());
 

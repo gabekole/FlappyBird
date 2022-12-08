@@ -6,6 +6,8 @@ class Player {
 
     private velocity: number;
 
+    private time: number;
+
     constructor(graphic : Sprite, hitbox : Sprite){
         this.graphic = graphic;
         this.hitbox = hitbox;
@@ -18,6 +20,8 @@ class Player {
         this.graphic.rotation = this.hitbox.rotation;
 
         this.velocity = 0;
+
+        this.time = 0;
     }
 
     public updatePhysics(delta : number, gravity : number, maxVelocity : number){
@@ -44,6 +48,16 @@ class Player {
 
         this.graphic.y = y;
         this.hitbox.y = y;
+    }
+
+    public undulateUpdate(delta: number, yPosition : number){
+        this.time += delta;
+        this.graphic.y = 20*Math.sin(this.time/15) + yPosition;
+    }
+
+    public setRotation(angle: number){
+        this.graphic.rotation = angle;
+        this.hitbox.rotation = angle;
     }
 
     public incrementPosition(x: number, y: number){

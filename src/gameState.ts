@@ -1,6 +1,6 @@
 // Create state variables
 let state = {
-    mode: 'menu', //menu, game, dead
+    mode: 'idle', //menu, play, dead, idle
     modeStarted: false, 
     inGameState: {
         currentScore: 0,
