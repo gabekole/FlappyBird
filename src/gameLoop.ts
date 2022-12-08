@@ -1,4 +1,4 @@
-import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, IPointData } from 'pixi.js'
+import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
 
 import { titleTextStyle } from './styles/textStyles.js'
 import { boxCollides, pipeCollides } from './collision'
@@ -13,7 +13,7 @@ import groundImg from '../public/assets/grass.png'
 import pipeImg from '../public/assets/pipe.png'
 
 
-function getGameUpdateFuncs(app : Application) {
+function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     // Create container for pipes
     const backLayer = new Container();
 
@@ -52,23 +52,23 @@ function getGameUpdateFuncs(app : Application) {
 
     function menuUpdate(delta : number) {
         if (!state['modeStarted']){
-            app.stage.removeChildren();
+            stage.removeChildren();
             backLayer.removeChildren();
             const clickableArea = new Sprite();
-            clickableArea.width = app.screen.width;
-            clickableArea.height = app.screen.height;
+            clickableArea.width = renderer.screen.width;
+            clickableArea.height = renderer.screen.height;
             clickableArea.interactive = true;
             clickableArea.on('pointerdown', menuClick);
             document.removeEventListener('keypress', deathClick);
             document.addEventListener('keypress', menuClick);
-            app.stage.addChild(clickableArea)
+            stage.addChild(clickableArea)
             
 
             const richText = new Text('Flappy Bird Clone', titleTextStyle);
             richText.x = 50;
             richText.y = 220;
             
-            app.stage.addChild(richText);
+            stage.addChild(richText);
 
             state['modeStarted'] = true;
         }
@@ -86,20 +86,20 @@ function getGameUpdateFuncs(app : Application) {
         if (!state['modeStarted']){
             state['inGameState']['totalDistance'] = 0;
             state['inGameState']['distanceSinceSpawn'] = 0
-            app.stage.removeChildren();
+            stage.removeChildren();
             backLayer.removeChildren();
             const clickableArea = new Sprite();
-            clickableArea.width = app.screen.width;
-            clickableArea.height = app.screen.height;
+            clickableArea.width = renderer.screen.width;
+            clickableArea.height = renderer.screen.height;
             clickableArea.interactive = true;
-            app.stage.addChild(clickableArea)
+            stage.addChild(clickableArea)
 
             background.resetBackgroundPosition();
             ground.tilePosition.x = 0;
-            app.stage.addChild(background);
+            stage.addChild(background);
 
-            app.stage.addChild(backLayer);
-            app.stage.addChild(scoreText);
+            stage.addChild(backLayer);
+            stage.addChild(scoreText);
             document.removeEventListener('keypress', deathClick);
             document.removeEventListener('keypress', menuClick);
             clickableArea.on('pointerdown', playClick);
@@ -107,12 +107,12 @@ function getGameUpdateFuncs(app : Application) {
             state['inGameState']['onGround'] = false;
 
             player.setVelocity(-5);
-            app.stage.addChild(player.hitbox);
-            app.stage.addChild(player.graphic);
+            stage.addChild(player.hitbox);
+            stage.addChild(player.graphic);
 
             player.setPosition(140, 50);
 
-            app.stage.addChild(ground);
+            stage.addChild(ground);
 
             state['modeStarted'] = true;
         }
@@ -156,8 +156,8 @@ function getGameUpdateFuncs(app : Application) {
         // Remove pipes that are offscreen
         pipes = pipes.filter((pipe) => {
             if( pipe.bottomHalf.getBounds().right < 0){
-                app.stage.removeChild(pipe.bottomHalf);
-                app.stage.removeChild(pipe.topHalf);
+                stage.removeChild(pipe.bottomHalf);
+                stage.removeChild(pipe.topHalf);
                 pipe.bottomHalf.destroy();
                 pipe.topHalf.destroy();
                 return false;
@@ -176,7 +176,7 @@ function getGameUpdateFuncs(app : Application) {
     }
     function deadUpdate(delta : number) {
         if (!state['modeStarted']){
-            const clickableArea = app.stage.getChildAt(0);
+            const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
 
             clickableArea.on('pointerdown', deathClick);
@@ -187,7 +187,7 @@ function getGameUpdateFuncs(app : Application) {
             richText.x = 50;
             richText.y = 220;
             
-            app.stage.addChild(richText);
+            stage.addChild(richText);
         
             state['modeStarted'] = true;
         }
@@ -208,8 +208,8 @@ function getGameUpdateFuncs(app : Application) {
 }
 
 
-function createGameUpdate(app : Application) {
-    let [menuUpdate, playUpdate, deadUpdate] = getGameUpdateFuncs(app);
+function createGameUpdate(stage : Container, renderer: Renderer) {
+    let [menuUpdate, playUpdate, deadUpdate] = getGameUpdateFuncs(stage, renderer);
     function gameUpdate(delta : number) {
         if (state['mode'] == 'menu') {
             menuUpdate(delta)

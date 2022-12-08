@@ -1,4 +1,4 @@
-import { Application, autoDetectRenderer } from 'pixi.js'
+import { Application, autoDetectRenderer, Container } from 'pixi.js'
 import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
 import constants from './constants'
@@ -16,25 +16,48 @@ import constants from './constants'
 
 // Initialize PixiJS aplication
 function initialize(){
-    const app = new Application({
+
+    const stage = new Container();
+
+    const renderer = autoDetectRenderer({
         background: '#1099bb',
         antialias: true,
         autoDensity: true,
         width: constants['gameWidth'],
         height: constants['gameHeight'],
-       });
-   
+    });
+
    const gameArea = document.getElementById('game-area')
-
-   if (gameArea == null){
-       return;
-   }
     
-   gameArea.appendChild(app.view);
+   gameArea.appendChild(renderer.view);
+   const gameUpdate = createGameUpdate(stage, renderer);
+
    
 
-   const gameUpdate = createGameUpdate(app);
-   app.ticker.add( ((delta)=>gameUpdate(delta, app)) )
+    function renderUpdate(lastTime){
+        let now = performance.now();
+        let delta = now - lastTime;
+
+        console.log('render');
+
+        renderer.render(stage);
+        requestAnimationFrame(()=>{renderUpdate(delta)});
+    }
+    requestAnimationFrame(()=>{renderUpdate(performance.now)});
+
+    function gameLogic(lastTime){
+        let now = performance.now();
+        let delta = now - lastTime;
+
+        console.log('state update');
+
+        //Update state
+        gameUpdate(delta/15);
+
+        setTimeout(()=>{gameLogic(now)}, 10);
+    }
+    gameLogic(performance.now());
+
 }
 
 
