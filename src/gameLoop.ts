@@ -1,11 +1,12 @@
 import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
 
-import { titleTextStyle } from './styles/textStyles.js'
+import { titleTextStyle, scoreTextStyle } from './styles/textStyles.js'
 import { boxCollides, floorCollides, pipeCollides } from './collision'
 import { Player } from './players'
 import constants from './constants'
 import { Pipe } from './pipe'
 import state from './gameState'
+import ScoreCard from './scoreCard'
 import parallaxBackground from './parallaxBackground'
 
 import playerImg from '../public/assets/wing.png'
@@ -82,9 +83,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         console.log('playClick');
         player.setVelocity(-10);
     }
-    const scoreText = new Text('0', titleTextStyle);
-    scoreText.x = 300 - (scoreText.width/2.0);
-    scoreText.y = 50;
 
     let idleClick = (event : any) => {
         console.log('idleClick');
@@ -131,6 +129,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         ground.tilePosition.x -= delta*constants['moveSpeed'];
     }
 
+    let scoreText : Text;
     function playUpdate(delta : number) {
         if (!state['modeStarted']){
             state['inGameState']['totalDistance'] = 0;
@@ -139,6 +138,11 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
             const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
+
+
+            scoreText = new Text('0', scoreTextStyle);
+            scoreText.x = constants['gameWidth']/2.0 - (scoreText.width/2.0);
+            scoreText.y = constants['gameHeight']*.1;
 
             stage.addChild(scoreText);
 
@@ -216,6 +220,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         state['mode'] = 'idle';
         state['modeStarted'] = false;
     }
+    const label = new ScoreCard();
     function deadUpdate(delta : number) {
         if (!state['modeStarted']){
             const clickableArea = stage.getChildAt(0);
@@ -226,10 +231,16 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             document.removeEventListener('keypress', playClick);
             document.addEventListener('keypress', deathClick);
             const richText = new Text('Click to play again', titleTextStyle);
-            richText.x = 50;
-            richText.y = 220;
+            richText.anchor.set(.5);
+            richText.x = constants['gameWidth']/2.0;
+            richText.y = constants['gameHeight']*.3;
             
             stage.addChild(richText);
+            stage.addChild(label);
+            label.x = constants['gameWidth']/2.0 - label.width/2.0;
+            label.y = constants['gameHeight']/2.0 - label.height/2.0;
+
+            
         
             state['modeStarted'] = true;
         }
