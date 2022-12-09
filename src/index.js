@@ -9,9 +9,6 @@ window.WebFontConfig = {
     google: {
         families: ['VT323'],
     },
-    active() {
-        init();
-    },
 };
 
 /* eslint-disable */
@@ -33,9 +30,6 @@ function initialize(){
 
     const stage = new Container();
 
-    const renderUpdateTime = 22;
-    const gameUpdateTime = 10;
-
     const renderer = autoDetectRenderer({
         background: '#1099bb',
         antialias: false,
@@ -50,18 +44,29 @@ function initialize(){
    gameArea.appendChild(renderer.view);
    const gameUpdate = createGameUpdate(stage, renderer);
 
-   
 
-    function renderUpdate(lastTime){
-        let now = performance.now();
-        let delta = now - lastTime;
+   const fps = 48;
+   let now;
+   let then = Date.now();
+   const interval = 1000/fps;
+   let delta;
 
-        renderer.render(stage);
-
-        now = performance.now();
-        setTimeout(()=>{requestAnimationFrame(()=>{renderUpdate(now)})}, renderUpdateTime);
-    }
-    requestAnimationFrame(()=>{renderUpdate(performance.now)});
+   const gameUpdateTime = 12;
+    
+   // https://gist.github.com/elundmark/38d3596a883521cb24f5
+   function draw() {
+       requestAnimationFrame(draw);
+        
+       now = Date.now();
+       delta = now - then;
+        
+       if (delta > interval) {
+           then = now - (delta % interval);
+            
+           renderer.render(stage);
+       }
+   }
+   draw();
 
     function gameLogic(lastTime){
         let now = performance.now();
