@@ -45,12 +45,10 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
     let pipes : Pipe[] = [];
     let playClick = (event : any) => {
-        console.log('playClick');
         player.setVelocity(-10);
     }
 
     let idleClick = (event : any) => {
-        console.log('idleClick');
         state['modeStarted'] = false;
         state['mode'] = 'play';
     }
@@ -179,7 +177,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     }
 
     let deathClick = (event : any) => {
-        console.log('deathClick');
         state['mode'] = 'idle';
         state['modeStarted'] = false;
     }
