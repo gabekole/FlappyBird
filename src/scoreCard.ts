@@ -15,6 +15,7 @@ class ScoreCard extends Container {
         
         this.backdrop = new Sprite(Texture.WHITE);
         this.backdrop.tint = 0x610539;
+        this.backdrop.alpha = .8;
         this.backdrop.width = 200;
         this.backdrop.height = 200;
 
