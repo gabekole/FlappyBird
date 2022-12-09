@@ -7,8 +7,8 @@ class ScoreCard extends Container {
     private scoreLabel : Text;
     private highScoreLabel : Text;
 
-    private score : Text;
-    private highScore : Text;
+    public score : Text;
+    public highScore : Text;
     
     constructor(){
         super();

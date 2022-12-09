@@ -220,7 +220,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         state['mode'] = 'idle';
         state['modeStarted'] = false;
     }
-    const label = new ScoreCard();
+    const scoreCard = new ScoreCard();
     function deadUpdate(delta : number) {
         if (!state['modeStarted']){
             const clickableArea = stage.getChildAt(0);
@@ -234,11 +234,16 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             richText.anchor.set(.5);
             richText.x = constants['gameWidth']/2.0;
             richText.y = constants['gameHeight']*.3;
+
+            state['history']['highScore'] = Math.max(state['history']['highScore'], state['inGameState']['currentScore']);
+            localStorage.setItem('highScore', state['history']['highScore'].toString());
+            scoreCard.score.text = state['inGameState']['currentScore'];
+            scoreCard.highScore.text = state['history']['highScore'];
             
             stage.addChild(richText);
-            stage.addChild(label);
-            label.x = constants['gameWidth']/2.0 - label.width/2.0;
-            label.y = constants['gameHeight']/2.0 - label.height/2.0;
+            stage.addChild(scoreCard);
+            scoreCard.x = constants['gameWidth']/2.0 - scoreCard.width/2.0;
+            scoreCard.y = constants['gameHeight']/2.0 - scoreCard.height/2.0;
 
             
         
@@ -263,6 +268,13 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
 function createGameUpdate(stage : Container, renderer: Renderer) {
     let [menuUpdate, playUpdate, deadUpdate, idleUpdate] = getGameUpdateFuncs(stage, renderer);
+
+    state['history']['highScore'] = Number(localStorage.getItem('highScore'));
+
+    if (isNaN(state['history']['highScore'])){
+        state['history']['highScore'] = 0;
+    }
+
     function gameUpdate(delta : number) {
         if (state['mode'] == 'idle') {
             idleUpdate(delta);
