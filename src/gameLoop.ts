@@ -1,6 +1,6 @@
 import { Sprite, Text, Texture, Container, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
 
-import { titleTextStyle, scoreTextStyle } from './styles/textStyles.js'
+import { titleTextStyle, scoreTextStyle } from './styles/textStyles'
 import { floorCollides, pipeCollides } from './collision'
 import { Player } from './players'
 import constants from './constants'
