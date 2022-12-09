@@ -189,14 +189,17 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
 
-            clickableArea.on('pointerdown', deathClick);
 
             document.removeEventListener('keypress', playClick);
-            document.addEventListener('keypress', deathClick);
             const richText = new Text('Click to play again', titleTextStyle);
             richText.anchor.set(.5);
             richText.x = constants['gameWidth']/2.0;
             richText.y = constants['gameHeight']*.3;
+
+            setTimeout(()=>{
+                clickableArea.on('pointerdown', deathClick);
+                document.addEventListener('keypress', deathClick);
+            }, 80)
 
             state['history']['highScore'] = Math.max(state['history']['highScore'], state['inGameState']['currentScore']);
             localStorage.setItem('highScore', state['history']['highScore'].toString());
