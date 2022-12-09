@@ -8,6 +8,13 @@ function boxCollides(spriteOne : Sprite, spriteTwo: Sprite){
     return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
 }
 
+function floorCollides(spriteOne : Sprite, spriteFloor: Sprite){
+    let ab = spriteOne.getBounds();
+    let bb = spriteFloor.getBounds();
+
+    return ab.y > bb.y || ab.y + ab.width > bb.y;
+}
+
 function pipeCollides(spriteOne : Sprite, pipe : Pipe)
 {
     let spriteBounds = spriteOne.getBounds();
@@ -16,8 +23,7 @@ function pipeCollides(spriteOne : Sprite, pipe : Pipe)
 
     let collidesBottom = spriteBounds.x + spriteBounds.width > bottomPipeBounds.x &&
                         spriteBounds.x < bottomPipeBounds.x + bottomPipeBounds.width && 
-                        spriteBounds.y + spriteBounds.height > bottomPipeBounds.y &&
-                        spriteBounds.y < bottomPipeBounds.y + bottomPipeBounds.height;
+                        spriteBounds.y + spriteBounds.height > bottomPipeBounds.y;
 
     let collidesTop = spriteBounds.x + spriteBounds.width > topPipeBounds.x &&
                         spriteBounds.x < topPipeBounds.x + topPipeBounds.width && 
@@ -26,4 +32,4 @@ function pipeCollides(spriteOne : Sprite, pipe : Pipe)
     return collidesBottom || collidesTop;
 }
 
-export { boxCollides, pipeCollides };
+export { boxCollides, pipeCollides, floorCollides };

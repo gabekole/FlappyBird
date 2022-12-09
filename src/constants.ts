@@ -1,6 +1,6 @@
 const constantValues = {
-    gameWidth: 600,
-    gameHeight: 600,
+    gameWidth: 415,
+    gameHeight: 720,
     moveSpeed: 2,
     pipes: {
         distancePerSpawn: 250,
@@ -11,7 +11,7 @@ const constantValues = {
         height: 60,
         width: 70,
         hitboxHeight: 40,
-        hitboxWidth: 50,
+        hitboxWidth: 40,
     }
 };
 

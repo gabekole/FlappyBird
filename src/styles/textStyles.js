@@ -1,11 +1,9 @@
 import { TextStyle } from 'pixi.js'
 
 const titleTextStyle = new TextStyle({
-    fontFamily: 'Arial',
-    fontSize: 36,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-    fill: ['#ffffff', '#00ff99'], // gradient
+    fontFamily: 'VT323',
+    fontSize: 40,
+    fill: ['#ffffff'],
     stroke: '#4a1850',
     strokeThickness: 5,
     dropShadow: true,
@@ -18,4 +16,28 @@ const titleTextStyle = new TextStyle({
     lineJoin: 'round',
 });
 
-export { titleTextStyle };
+const scoreTextStyle = new TextStyle({
+    fontFamily: 'VT323',
+    fontSize: 80,
+    fill: ['#ffffff'], 
+    stroke: '#4a1850',
+    strokeThickness: 5,
+    wordWrap: true,
+    wordWrapWidth: 440,
+    lineJoin: 'round',
+});
+
+const cardLabelTextStyle = new TextStyle({
+    fontFamily: 'VT323',
+    fontSize: 40,
+    fontWeight: 'bold',
+    fill: ['#FFFFFF'],
+    stroke: '#4a1850',
+    strokeThickness: 0,
+    dropShadow: false,
+    wordWrap: true,
+    wordWrapWidth: 440,
+    lineJoin: 'round',
+});
+
+export { titleTextStyle, scoreTextStyle, cardLabelTextStyle };
