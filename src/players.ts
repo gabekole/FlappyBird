@@ -49,6 +49,10 @@ class Player {
         this.graphic.y = y;
         this.hitbox.y = y;
     }
+    public setY(y : number){
+        this.graphic.y = y;
+        this.hitbox.y = y;
+    }
 
     public undulateUpdate(delta: number, yPosition : number){
         this.time += delta;

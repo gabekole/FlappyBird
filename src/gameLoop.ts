@@ -145,6 +145,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;
             pipes = []
+            player.setY(ground.y - player.graphic.getBounds().height/3.0);
             console.log('collideGround');
         }
 
@@ -219,6 +220,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             if (floorCollides(player.hitbox, ground)){
                 player.setVelocity(.1);
                 state['inGameState']['onGround'] = true;
+                player.setY(ground.y - player.graphic.getBounds().height/3.0);
                 console.log('collideGround');
             }
         }
