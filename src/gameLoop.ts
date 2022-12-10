@@ -98,6 +98,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['distanceSinceSpawn'] = 0
 
 
+
             const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
 
@@ -123,6 +124,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
             state['modeStarted'] = true;
         }
+
         state['inGameState']['currentScore'] = Math.floor(Math.max(0, (state['inGameState']['totalDistance']-constants['gameWidth']-constants['player']['hitboxWidth'])/constants['pipes']['distancePerSpawn']))
         scoreText.text = state['inGameState']['currentScore'];
         player.updatePhysics(delta, .5, 25);

@@ -1,4 +1,4 @@
-import { autoDetectRenderer, Container, Text } from 'pixi.js'
+import { Application, autoDetectRenderer, Container, Ticker } from 'pixi.js'
 import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
 import constants from './constants'
@@ -44,31 +44,18 @@ function initialize(){
    gameArea.appendChild(renderer.view);
    const gameUpdate = createGameUpdate(stage, renderer);
 
-   let lastRenderTime = performance.now();
-   let lastGameUpdateTime = performance.now();
-   const renderInterval = 1000.0/120.0;
-   const gameUpdateInterval = 1000.0/40.0;
+   const ticker = new Ticker();
+   ticker.maxFPS = 70;
+   ticker.minFPS = 0;
 
-   
+   ticker.add((delta) => {
+        console.log(ticker.FPS);
+        gameUpdate(delta);
+        renderer.render(stage);
+   });
+
+   ticker.start();
     
-   // https://gist.github.com/elundmark/38d3596a883521cb24f5
-   function update() {
-       requestAnimationFrame(update);
-
-       let now = performance.now(); 
-       let renderDelta = now - lastRenderTime;
-       let gameDelta = now - lastGameUpdateTime;
-
-       if(renderDelta > renderInterval){
-            renderer.render(stage);
-            lastRenderTime = now;
-       }
-       if(gameDelta > gameUpdateInterval){
-            gameUpdate(gameDelta/15.0);
-            lastGameUpdateTime = now;
-       }
-   }
-   update();
 
 }
 
