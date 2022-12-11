@@ -1,7 +1,7 @@
-import { Sprite, Text, Texture, Container, Application, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
+import { Sprite, Text, Texture, Container, BaseTexture, Rectangle, TilingSprite, Renderer } from 'pixi.js'
 
-import { titleTextStyle, scoreTextStyle } from './styles/textStyles.js'
-import { boxCollides, floorCollides, pipeCollides } from './collision'
+import { titleTextStyle, scoreTextStyle } from './styles/textStyles'
+import { floorCollides, pipeCollides } from './collision'
 import { Player } from './players'
 import constants from './constants'
 import { Pipe } from './pipe'
@@ -43,49 +43,12 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     //Create pipe texture
     const pipeTexture = Texture.from(pipeImg);
 
-
-    let menuClick = (event : any)=>{
-        console.log('menuClick');
-        console.log(event, typeof(event));
-        state['mode'] = 'play';
-        state['modeStarted'] = false;
-    }
-
-    function menuUpdate(delta : number) {
-        if (!state['modeStarted']){
-            stage.removeChildren();
-            backLayer.removeChildren();
-            const clickableArea = new Sprite();
-            clickableArea.width = renderer.screen.width;
-            clickableArea.height = renderer.screen.height;
-            clickableArea.interactive = true;
-            clickableArea.on('pointerdown', menuClick);
-            document.removeEventListener('keypress', deathClick);
-            document.addEventListener('keypress', menuClick);
-            stage.addChild(clickableArea)
-            
-
-            const richText = new Text('Flappy Bird Clone', titleTextStyle);
-            richText.x = 50;
-            richText.y = 220;
-            
-            stage.addChild(richText);
-
-            state['modeStarted'] = true;
-
-            // state['mode'] = 'play';
-            // state['modeStarted'] = false;
-        }
-    }
-
     let pipes : Pipe[] = [];
     let playClick = (event : any) => {
-        console.log('playClick');
         player.setVelocity(-10);
     }
 
     let idleClick = (event : any) => {
-        console.log('idleClick');
         state['modeStarted'] = false;
         state['mode'] = 'play';
     }
@@ -106,7 +69,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             stage.addChild(backLayer);
 
             document.removeEventListener('keypress', deathClick);
-            document.removeEventListener('keypress', menuClick);
             document.removeEventListener('keypress', playClick);
 
             clickableArea.on('pointerdown', idleClick);
@@ -147,7 +109,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             stage.addChild(scoreText);
 
             document.removeEventListener('keypress', deathClick);
-            document.removeEventListener('keypress', menuClick);
             document.removeEventListener('keypress', idleClick);
 
             clickableArea.on('pointerdown', playClick);
@@ -216,7 +177,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     }
 
     let deathClick = (event : any) => {
-        console.log('deathClick');
         state['mode'] = 'idle';
         state['modeStarted'] = false;
     }
@@ -226,14 +186,17 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
 
-            clickableArea.on('pointerdown', deathClick);
 
             document.removeEventListener('keypress', playClick);
-            document.addEventListener('keypress', deathClick);
             const richText = new Text('Click to play again', titleTextStyle);
             richText.anchor.set(.5);
             richText.x = constants['gameWidth']/2.0;
             richText.y = constants['gameHeight']*.3;
+
+            setTimeout(()=>{
+                clickableArea.on('pointerdown', deathClick);
+                document.addEventListener('keypress', deathClick);
+            }, 80)
 
             state['history']['highScore'] = Math.max(state['history']['highScore'], state['inGameState']['currentScore']);
             localStorage.setItem('highScore', state['history']['highScore'].toString());
@@ -253,7 +216,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         if(!state['inGameState']['onGround']){
             player.updatePhysics(delta, .5, 25);
 
-            if (boxCollides(player.hitbox, ground)){
+            if (floorCollides(player.hitbox, ground)){
                 player.setVelocity(.1);
                 state['inGameState']['onGround'] = true;
                 console.log('collideGround');
@@ -262,12 +225,12 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
     }
 
-    return [menuUpdate, playUpdate, deadUpdate, idleUpdate];
+    return [playUpdate, deadUpdate, idleUpdate];
 }
 
 
 function createGameUpdate(stage : Container, renderer: Renderer) {
-    let [menuUpdate, playUpdate, deadUpdate, idleUpdate] = getGameUpdateFuncs(stage, renderer);
+    let [playUpdate, deadUpdate, idleUpdate] = getGameUpdateFuncs(stage, renderer);
 
     state['history']['highScore'] = Number(localStorage.getItem('highScore'));
 
@@ -278,9 +241,6 @@ function createGameUpdate(stage : Container, renderer: Renderer) {
     function gameUpdate(delta : number) {
         if (state['mode'] == 'idle') {
             idleUpdate(delta);
-        }
-        if (state['mode'] == 'menu') {
-            menuUpdate(delta)
         }
         if (state['mode'] == 'play'){
             playUpdate(delta);

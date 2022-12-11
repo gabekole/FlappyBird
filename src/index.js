@@ -3,25 +3,11 @@ import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'
 import constants from './constants'
 
-// TODO 
-// Player animations
-// Sound
-// Menu Rework (HighScore)
-// Pre-Play scene  
-// Pipe texture vertical tiling
-// Difficulty scaling
-// Player skins / Background skins that can be set in menu
-// Coins to collect to purchase player skins
-// Boss battle?
-
 // Initialize PixiJS aplication
 // Load them google fonts before starting...
 window.WebFontConfig = {
     google: {
         families: ['VT323'],
-    },
-    active() {
-        init();
     },
 };
 
@@ -32,7 +18,7 @@ window.WebFontConfig = {
     wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'
     }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
     wf.type = 'text/javascript';
-    wf.async = 'true';
+    wf.async = true;
     const s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
 }());
@@ -43,9 +29,6 @@ window.WebFontConfig = {
 function initialize(){
 
     const stage = new Container();
-
-    const renderUpdateTime = 22;
-    const gameUpdateTime = 10;
 
     const renderer = autoDetectRenderer({
         background: '#1099bb',
@@ -61,18 +44,29 @@ function initialize(){
    gameArea.appendChild(renderer.view);
    const gameUpdate = createGameUpdate(stage, renderer);
 
-   
 
-    function renderUpdate(lastTime){
-        let now = performance.now();
-        let delta = now - lastTime;
+   const fps = 48;
+   let now;
+   let then = Date.now();
+   const interval = 1000/fps;
+   let delta;
 
-        renderer.render(stage);
-
-        now = performance.now();
-        setTimeout(()=>{requestAnimationFrame(()=>{renderUpdate(now)})}, renderUpdateTime);
-    }
-    requestAnimationFrame(()=>{renderUpdate(performance.now)});
+   const gameUpdateTime = 12;
+    
+   // https://gist.github.com/elundmark/38d3596a883521cb24f5
+   function draw() {
+       requestAnimationFrame(draw);
+        
+       now = Date.now();
+       delta = now - then;
+        
+       if (delta > interval) {
+           then = now - (delta % interval);
+            
+           renderer.render(stage);
+       }
+   }
+   draw();
 
     function gameLogic(lastTime){
         let now = performance.now();
