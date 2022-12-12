@@ -8,20 +8,20 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 
 <a href="https://gabekole.github.io/FlappyBird">Play the game!</a>
 
-### Built With
+## Built With
 
 - [Webpack](https://github.com/webpack)
 - [Typescript](https://github.com/microsoft/TypeScript)
 - Javascript
 - [Pixi.JS](https://github.com/pixijs)
 
-## Contributing!
+### Contributing!
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## License
+### License
 
 [MIT](https://choosealicense.com/licenses/mit/)
