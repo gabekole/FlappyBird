@@ -27,6 +27,10 @@ A game designed for the web that runs on desktop and mobile browsers. Inspired b
 
 <br>
 
+## Acknowledgements
+
+- [Kevin Wan](https://github.com/KevinWan123)
+
 ### Contributing!
 
 Pull requests are welcome. For major changes, please open an issue first
