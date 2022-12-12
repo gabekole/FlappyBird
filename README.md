@@ -18,7 +18,7 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 - Webpack
 - Typescript
 - Javascript
-- [Pixi.JS](https://github.com/pixijs). 
+- [Pixi.JS](https://github.com/pixijs)
 
 ## Contributing!
 
