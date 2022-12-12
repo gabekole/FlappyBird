@@ -49,7 +49,6 @@ function initialize(){
    ticker.minFPS = 0;
 
    ticker.add((delta) => {
-        console.log(ticker.FPS);
         gameUpdate(delta);
         renderer.render(stage);
    });

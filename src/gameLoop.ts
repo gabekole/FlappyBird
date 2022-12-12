@@ -199,7 +199,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             setTimeout(()=>{
                 clickableArea.on('pointerdown', deathClick);
                 document.addEventListener('keypress', deathClick);
-            }, 80)
+            }, 250)
 
             state['history']['highScore'] = Math.max(state['history']['highScore'], state['inGameState']['currentScore']);
             localStorage.setItem('highScore', state['history']['highScore'].toString());
