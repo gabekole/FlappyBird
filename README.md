@@ -2,7 +2,7 @@
 
 ## Flappy Bird Clone
 
-### A game designed for the web that runs on desktop and mobile browsers. Inspired by the popular mobile game "Flappy bird". 
+A game designed for the web that runs on desktop and mobile browsers. Inspired by the popular mobile game "Flappy bird". 
 
 
 <a href="https://gabekole.github.io/FlappyBird">
