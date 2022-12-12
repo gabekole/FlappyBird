@@ -75,11 +75,11 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             document.addEventListener('keypress', idleClick);
 
             player.setVelocity(-5);
-            player.setRotation(0);
-            stage.addChild(player.hitbox);
-            stage.addChild(player.graphic);
+            player.rotation = 0;
+            stage.addChild(player);
 
-            player.setPosition(140, .35*constants['gameHeight']);
+            player.x = 140
+            player.y = .35*constants['gameHeight'];
 
             stage.addChild(ground);
 
@@ -117,8 +117,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['onGround'] = false;
 
             player.setVelocity(-5);
-            stage.addChild(player.hitbox);
-            stage.addChild(player.graphic);
+            stage.addChild(player);
 
             stage.addChild(ground);
 
@@ -142,18 +141,18 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['distanceSinceSpawn'] -= constants['pipes']['distancePerSpawn'];
         }
 
-        if (floorCollides(player.hitbox, ground)){
+        if (floorCollides(player, ground)){
             state['mode'] = 'dead';
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;
             pipes = []
-            player.setY(ground.y - player.graphic.getBounds().height/3.0);
+            player.y = ground.y - player.getGraphicBounds().height/3.0;
             console.log('collideGround');
         }
 
         // Check for pipe collision and update positions
         pipes.forEach((pipe) => {
-            if ( pipeCollides(player.hitbox, pipe)){
+            if ( pipeCollides(player, pipe)){
                 console.log('collidePipe')
                 state['mode'] = 'dead';
                 state['modeStarted'] = false;
@@ -219,10 +218,10 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         if(!state['inGameState']['onGround']){
             player.updatePhysics(delta, .5, 25);
 
-            if (floorCollides(player.hitbox, ground)){
+            if (floorCollides(player, ground)){
                 player.setVelocity(.1);
                 state['inGameState']['onGround'] = true;
-                player.setY(ground.y - player.graphic.getBounds().height/3.0);
+                player.y = ground.y - player.getGraphicBounds().height/3.0;
                 console.log('collideGround');
             }
         }
