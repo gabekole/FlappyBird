@@ -6,7 +6,7 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 
 <img src="https://user-images.githubusercontent.com/72774655/206951228-31260c15-bccd-448f-b78f-2bed730e11e9.png" alt="Screenshot of gameplay" width="350"/>
 
-<a href="https://gabekole.github.io/FlappyBird">Play the game</a> 
+[Play the game]("https://gabekole.github.io/FlappyBird")
 
     2. Describe your overall experience in a couple of sentences.
     3. List a few specific technical things that you learned or improved on.
