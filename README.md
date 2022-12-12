@@ -22,6 +22,8 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 - With Webpack's [Dev Server](https://webpack.js.org/configuration/dev-server/), I was able to automatically compile my code and see the changes reflected in the browser in real time, which made it much easier for me to iterate and test my code during development. 
 - In my project, I initialy used plain Javascript but later switched to Typescript. I found that Typescript's compile time error checking made it much easier for me to write, debug, and maintain my code.
 
+<br>
+
 ### Contributing!
 
 Pull requests are welcome. For major changes, please open an issue first
