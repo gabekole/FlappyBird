@@ -7,6 +7,7 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 
 <a href="https://gabekole.github.io/FlappyBird">
   <img src="https://user-images.githubusercontent.com/72774655/206951228-31260c15-bccd-448f-b78f-2bed730e11e9.png" alt="Screenshot of gameplay" width="350"/>
+  <br>
   Play the game!
 </a>
 
