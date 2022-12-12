@@ -2,7 +2,7 @@
 
 ## Flappy Bird Clone
 
-#### This project is a clone of the popular mobile game "flappy bird" to be played in the browser.
+### This project is a clone of the popular mobile game "flappy bird" to be played in the browser.
 
 
 <a href="https://gabekole.github.io/FlappyBird">
