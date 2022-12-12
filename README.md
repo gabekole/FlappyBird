@@ -19,8 +19,8 @@ This project is a clone of the popular mobile game "flappy bird" to be played in
 
 ## Lessons Learned
 
-Fast prototyping and a short turnaround time is extremely helpful to since it allows for more frequent testing of changes. 
-Webpack's [Dev Server](https://webpack.js.org/configuration/dev-server/) is an extremely helpful tool as it supports hot reloading 
+- Fast prototyping and a short turnaround time is extremely helpful to since it allows for more frequent testing of changes. 
+- Webpack's [Dev Server](https://webpack.js.org/configuration/dev-server/) is very helpful since it supports hot reloading 
 which reduces build times. 
 
 
