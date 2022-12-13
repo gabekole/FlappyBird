@@ -10,6 +10,7 @@
     "production": "webpack --mode production --config webpack.config.js",
     "build": "webpack --mode development --config webpack.config.js",
     "start": "webpack serve --config webpack.config.js --mode development",
+    "serve-build": "http-server ./dist",
     "deploy": "gh-pages -d dist"
   },
   "repository": {

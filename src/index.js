@@ -54,8 +54,6 @@ function initialize(){
    });
 
    ticker.start();
-    
-
 }
 
 
