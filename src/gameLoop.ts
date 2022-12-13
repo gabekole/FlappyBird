@@ -28,8 +28,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     const player = new Player(graphic, hitbox);
 
     // Create ground sprite
-    const gnd = new BaseTexture(groundImg);
-    const gndTex = new Texture(gnd, new Rectangle(0, 0, 512, 100));
+    const gndTex = Texture.from(groundImg);
     const ground = new TilingSprite(gndTex);
     ground.width = constants['gameWidth'];
     ground.height = 10;

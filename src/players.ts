@@ -54,6 +54,7 @@ class Player extends Container{
     public getHitBox(){
         return this.hitbox.getBounds();
     }
+    
     public getGraphicBounds(){
         return this.graphic.getBounds();
     }
