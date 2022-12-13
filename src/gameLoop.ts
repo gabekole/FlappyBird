@@ -16,7 +16,7 @@ import pipeImg from '../public/assets/pipe.png'
 
 function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     // Create container for pipes
-    const backLayer = new Container();
+    const pipeLayer = new Container();
 
     // Creating the player components
     const graphic = Sprite.from(playerImg);
@@ -28,8 +28,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     const player = new Player(graphic, hitbox);
 
     // Create ground sprite
-    const gnd = new BaseTexture(groundImg);
-    const gndTex = new Texture(gnd, new Rectangle(0, 0, 512, 100));
+    const gndTex = Texture.from(groundImg);
     const ground = new TilingSprite(gndTex);
     ground.width = constants['gameWidth'];
     ground.height = 10;
@@ -55,7 +54,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     function idleUpdate(delta : number) {
         if (!state['modeStarted']){
             stage.removeChildren();
-            backLayer.removeChildren();
+            pipeLayer.removeChildren();
             const clickableArea = new Sprite();
             clickableArea.width = renderer.screen.width;
             clickableArea.height = renderer.screen.height;
@@ -66,7 +65,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             ground.tilePosition.x = 0;
             stage.addChild(background);
 
-            stage.addChild(backLayer);
+            stage.addChild(pipeLayer);
 
             document.removeEventListener('keypress', deathClick);
             document.removeEventListener('keypress', playClick);
@@ -75,11 +74,11 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             document.addEventListener('keypress', idleClick);
 
             player.setVelocity(-5);
-            player.setRotation(0);
-            stage.addChild(player.hitbox);
-            stage.addChild(player.graphic);
+            player.rotation = 0;
+            stage.addChild(player);
 
-            player.setPosition(140, .35*constants['gameHeight']);
+            player.x = 140
+            player.y = .35*constants['gameHeight'];
 
             stage.addChild(ground);
 
@@ -96,6 +95,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         if (!state['modeStarted']){
             state['inGameState']['totalDistance'] = 0;
             state['inGameState']['distanceSinceSpawn'] = 0
+
 
 
             const clickableArea = stage.getChildAt(0);
@@ -116,13 +116,13 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['onGround'] = false;
 
             player.setVelocity(-5);
-            stage.addChild(player.hitbox);
-            stage.addChild(player.graphic);
+            stage.addChild(player);
 
             stage.addChild(ground);
 
             state['modeStarted'] = true;
         }
+
         state['inGameState']['currentScore'] = Math.floor(Math.max(0, (state['inGameState']['totalDistance']-constants['gameWidth']-constants['player']['hitboxWidth'])/constants['pipes']['distancePerSpawn']))
         scoreText.text = state['inGameState']['currentScore'];
         player.updatePhysics(delta, .5, 25);
@@ -132,25 +132,25 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
         if(state['inGameState']['distanceSinceSpawn'] > constants['pipes']['distancePerSpawn']){
             const p = new Pipe(pipeTexture)
-            p.setGapLocation(p.width + Math.random()*(constants['gameHeight'] - p.gap - 2*p.width));
-            backLayer.addChild(p.topHalf);
-            backLayer.addChild(p.bottomHalf)
+            p.y = p.width + Math.random()*(constants['gameHeight'] - p.pipeGap - 2*p.pipeWidth);
+            pipeLayer.addChild(p);
             pipes.push(p);
 
             state['inGameState']['distanceSinceSpawn'] -= constants['pipes']['distancePerSpawn'];
         }
 
-        if (floorCollides(player.hitbox, ground)){
+        if (floorCollides(player, ground)){
             state['mode'] = 'dead';
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;
             pipes = []
+            player.y = ground.y - player.getGraphicBounds().height/3.0;
             console.log('collideGround');
         }
 
         // Check for pipe collision and update positions
-        pipes.forEach((pipe) => {
-            if ( pipeCollides(player.hitbox, pipe)){
+        pipes = pipes.filter((pipe) => {
+            if ( pipeCollides(player, pipe)){
                 console.log('collidePipe')
                 state['mode'] = 'dead';
                 state['modeStarted'] = false;
@@ -158,19 +158,14 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
                 pipes = [];
             }
             pipe.updatePosition(delta);
-        });
 
-        // Remove pipes that are offscreen
-        pipes = pipes.filter((pipe) => {
-            if( pipe.bottomHalf.getBounds().right < 0){
-                stage.removeChild(pipe.bottomHalf);
-                stage.removeChild(pipe.topHalf);
-                pipe.bottomHalf.destroy();
-                pipe.topHalf.destroy();
+            if( pipe.getBounds().right < 0){
+                stage.removeChild(pipe);
+                pipe.destroy();
                 return false;
             }
             return true;
-        })
+        });
 
         background.updateBackground(delta);
         ground.tilePosition.x -= delta*constants['moveSpeed'];
@@ -196,7 +191,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             setTimeout(()=>{
                 clickableArea.on('pointerdown', deathClick);
                 document.addEventListener('keypress', deathClick);
-            }, 80)
+            }, 250)
 
             state['history']['highScore'] = Math.max(state['history']['highScore'], state['inGameState']['currentScore']);
             localStorage.setItem('highScore', state['history']['highScore'].toString());
@@ -216,9 +211,10 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         if(!state['inGameState']['onGround']){
             player.updatePhysics(delta, .5, 25);
 
-            if (floorCollides(player.hitbox, ground)){
+            if (floorCollides(player, ground)){
                 player.setVelocity(.1);
                 state['inGameState']['onGround'] = true;
+                player.y = ground.y - player.getGraphicBounds().height/3.0;
                 console.log('collideGround');
             }
         }

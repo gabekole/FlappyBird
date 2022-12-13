@@ -1,16 +1,17 @@
 import { Sprite } from 'pixi.js'
 import { Pipe } from './pipe'
+import { Player } from './players'
 
-function floorCollides(spriteOne : Sprite, spriteFloor: Sprite){
-    let ab = spriteOne.getBounds();
+function floorCollides(player : Player, spriteFloor: Sprite){
+    let ab = player.getHitBox();
     let bb = spriteFloor.getBounds();
 
     return ab.y > bb.y || ab.y + ab.width > bb.y;
 }
 
-function pipeCollides(spriteOne : Sprite, pipe : Pipe)
+function pipeCollides(player : Player, pipe : Pipe)
 {
-    let spriteBounds = spriteOne.getBounds();
+    let spriteBounds = player.getHitBox();
     let topPipeBounds = pipe.getTopPipeBounds();
     let bottomPipeBounds = pipe.getBottomPipeBounds();
 
