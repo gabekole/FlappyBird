@@ -34,10 +34,9 @@ class Player extends Container{
 
         this.velocity = Math.min(Math.abs(this.velocity), maxVelocity) * Math.sign(this.velocity); 
 
-        const rotation = (this.velocity/22 + 9*this.graphic.rotation)/10
+        const rotation = (this.velocity/22 + 9*this.rotation)/10
 
-        this.graphic.rotation = rotation;
-        this.hitbox.rotation = rotation;
+        this.rotation = rotation;
 
         this.y += this.velocity * delta;
     }

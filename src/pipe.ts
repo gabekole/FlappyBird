@@ -1,14 +1,16 @@
-import { Texture, Sprite } from 'pixi.js'
+import { Texture, Sprite, Container } from 'pixi.js'
 import constants from './constants'
 
 
-class Pipe {
-    public topHalf: Sprite;
-    public bottomHalf: Sprite;
-    public width = 80;
-    public gap = 200;
+class Pipe extends Container {
+    private topHalf: Sprite;
+    private bottomHalf: Sprite;
+
+    public readonly pipeWidth = 80;
+    public readonly pipeGap = 200;
 
     constructor(graphic : Texture){
+        super();
 
         this.topHalf = new Sprite(graphic);
         this.bottomHalf = new Sprite(graphic);
@@ -19,21 +21,21 @@ class Pipe {
 
         this.bottomHalf.height = 600;
         this.topHalf.height = 600;
-        this.topHalf.width = this.width;
-        this.bottomHalf.width = this.width;
+        this.topHalf.width = this.pipeWidth;
+        this.bottomHalf.width = this.pipeWidth;
 
-        this.bottomHalf.x = constants['gameWidth'] + this.width;
-        this.topHalf.x = constants['gameWidth'] + this.width;
-    }
+        this.addChild(this.bottomHalf);
+        this.addChild(this.topHalf);
 
-    public setGapLocation(y: number){
-        this.topHalf.y = y;
-        this.bottomHalf.y = y + this.gap;
+        this.bottomHalf.x = constants['gameWidth'] + this.pipeWidth;
+        this.topHalf.x = constants['gameWidth'] + this.pipeWidth;
+
+        this.topHalf.y = 0;
+        this.bottomHalf.y = this.pipeGap;
     }
 
     public updatePosition(delta : number){
-        this.bottomHalf.x -= constants['moveSpeed']*delta;
-        this.topHalf.x -= constants['moveSpeed']*delta;
+        this.x -= constants['moveSpeed']*delta;
     }
 
     public getTopPipeBounds(){
