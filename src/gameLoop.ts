@@ -16,7 +16,7 @@ import pipeImg from '../public/assets/pipe.png'
 
 function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     // Create container for pipes
-    const backLayer = new Container();
+    const pipeLayer = new Container();
 
     // Creating the player components
     const graphic = Sprite.from(playerImg);
@@ -54,7 +54,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     function idleUpdate(delta : number) {
         if (!state['modeStarted']){
             stage.removeChildren();
-            backLayer.removeChildren();
+            pipeLayer.removeChildren();
             const clickableArea = new Sprite();
             clickableArea.width = renderer.screen.width;
             clickableArea.height = renderer.screen.height;
@@ -65,7 +65,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             ground.tilePosition.x = 0;
             stage.addChild(background);
 
-            stage.addChild(backLayer);
+            stage.addChild(pipeLayer);
 
             document.removeEventListener('keypress', deathClick);
             document.removeEventListener('keypress', playClick);
@@ -132,9 +132,8 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
 
         if(state['inGameState']['distanceSinceSpawn'] > constants['pipes']['distancePerSpawn']){
             const p = new Pipe(pipeTexture)
-            p.setGapLocation(p.width + Math.random()*(constants['gameHeight'] - p.gap - 2*p.width));
-            backLayer.addChild(p.topHalf);
-            backLayer.addChild(p.bottomHalf)
+            p.y = p.width + Math.random()*(constants['gameHeight'] - p.pipeGap - 2*p.pipeWidth);
+            pipeLayer.addChild(p);
             pipes.push(p);
 
             state['inGameState']['distanceSinceSpawn'] -= constants['pipes']['distancePerSpawn'];
@@ -150,7 +149,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
         }
 
         // Check for pipe collision and update positions
-        pipes.forEach((pipe) => {
+        pipes = pipes.filter((pipe) => {
             if ( pipeCollides(player, pipe)){
                 console.log('collidePipe')
                 state['mode'] = 'dead';
@@ -159,19 +158,14 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
                 pipes = [];
             }
             pipe.updatePosition(delta);
-        });
 
-        // Remove pipes that are offscreen
-        pipes = pipes.filter((pipe) => {
-            if( pipe.bottomHalf.getBounds().right < 0){
-                stage.removeChild(pipe.bottomHalf);
-                stage.removeChild(pipe.topHalf);
-                pipe.bottomHalf.destroy();
-                pipe.topHalf.destroy();
+            if( pipe.getBounds().right < 0){
+                stage.removeChild(pipe);
+                pipe.destroy();
                 return false;
             }
             return true;
-        })
+        });
 
         background.updateBackground(delta);
         ground.tilePosition.x -= delta*constants['moveSpeed'];
