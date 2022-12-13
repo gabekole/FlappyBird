@@ -9,7 +9,6 @@ import state from './gameState'
 import ScoreCard from './scoreCard'
 import parallaxBackground from './parallaxBackground'
 
-import playerImg from '../public/assets/wing.png'
 import groundImg from '../public/assets/grass.png'
 import pipeImg from '../public/assets/pipe.png'
 
@@ -19,13 +18,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     const pipeLayer = new Container();
 
     // Creating the player components
-    const graphic = Sprite.from(playerImg);
-    graphic.width = constants['player']['width'];
-    graphic.height = constants['player']['height'];
-    const hitbox = new Sprite();
-    hitbox.width = constants['player']['hitboxWidth'];
-    hitbox.height = constants['player']['hitboxHeight'];
-    const player = new Player(graphic, hitbox);
+    const player = new Player();
 
     // Create ground sprite
     const gndTex = Texture.from(groundImg);
@@ -45,6 +38,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
     let pipes : Pipe[] = [];
     let playClick = (event : any) => {
         player.setVelocity(-10);
+        player.flapWings();
     }
 
     let idleClick = (event : any) => {
@@ -76,6 +70,8 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             player.setVelocity(-5);
             player.rotation = 0;
             stage.addChild(player);
+
+            player.setAnimationSpeed(.13);
 
             player.x = 140
             player.y = .35*constants['gameHeight'];
@@ -143,7 +139,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['mode'] = 'dead';
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;
-            pipes = []
             player.y = ground.y - player.getGraphicBounds().height/3.0;
             console.log('collideGround');
         }
@@ -155,7 +150,6 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
                 state['mode'] = 'dead';
                 state['modeStarted'] = false;
                 player.setVelocity(.1);
-                pipes = [];
             }
             pipe.updatePosition(delta);
 
@@ -181,6 +175,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             const clickableArea = stage.getChildAt(0);
             clickableArea.removeAllListeners();
 
+            pipes = [];
 
             document.removeEventListener('keypress', playClick);
             const richText = new Text('Click to play again', titleTextStyle);
@@ -203,7 +198,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             scoreCard.x = constants['gameWidth']/2.0 - scoreCard.width/2.0;
             scoreCard.y = constants['gameHeight']/2.0 - scoreCard.height/2.0;
 
-            
+            player.setAnimationSpeed(0);
         
             state['modeStarted'] = true;
         }
