@@ -10,8 +10,8 @@ const constantValues = {
     player: {
         height: 60,
         width: 70,
-        hitboxHeight: 40,
-        hitboxWidth: 40,
+        hitboxHeight: 43,
+        hitboxWidth: 42,
     }
 };
 
