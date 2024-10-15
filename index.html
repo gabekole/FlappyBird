@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Document</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="/main.js" defer></script>
-    <script defer src="main.js"></script></head>
-    <body>
-        <div id="game-area"></div>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Flappy Bird Game</title>
+    <meta name="description" content="A vertical Flappy Bird-style game">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/main.js" defer></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #87CEEB; /* Sky blue background */
+            font-family: Arial, sans-serif;
+        }
+        #game-area {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            max-height: 800px;
+            background-color: #4CAF50; /* Green background for game area */
+            border: 3px solid #333;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+    </style>
+<script defer src="main.js"></script></head>
+<body>
+    <div id="game-area">
+        <div id="game-container"></div>
+    </div>
+</body>
 </html>
