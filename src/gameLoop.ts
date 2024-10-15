@@ -139,15 +139,20 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             state['inGameState']['distanceSinceSpawn'] -= constants['pipes']['distancePerSpawn'];
         }
 
+
+        let collided = false
+
         if (floorCollides(player, ground)){
             state['mode'] = 'dead';
             state['modeStarted'] = false;
             state['inGameState']['onGround'] = true;
             pipes = []
+            collided = true
             player.y = ground.y - player.getGraphicBounds().height/3.0;
             console.log('collideGround');
         }
 
+        console.log(pipes)
         // Check for pipe collision and update positions
         pipes = pipes.filter((pipe) => {
             if ( pipeCollides(player, pipe)){
@@ -156,6 +161,7 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
                 state['modeStarted'] = false;
                 player.setVelocity(.1);
                 pipes = [];
+                collided = true
             }
             pipe.updatePosition(delta);
 
@@ -166,6 +172,10 @@ function getGameUpdateFuncs(stage : Container, renderer: Renderer) {
             }
             return true;
         });
+
+        if(collided){
+            pipes = []
+        }
 
         background.updateBackground(delta);
         ground.tilePosition.x -= delta*constants['moveSpeed'];
