@@ -31,17 +31,49 @@ function initialize(){
     const stage = new Container();
 
     const renderer = autoDetectRenderer({
-        background: '#1099bb',
+        background: '#0x87CEEB',
         antialias: false,
         autoDensity: true,
         width: constants['gameWidth'],
         height: constants['gameHeight'],
+        resolution: 1, // Set to 1 to ensure pixel-perfect rendering
+        antialias: false,
         hello: true,
     });
 
    const gameArea = document.getElementById('game-area')
     
    gameArea.appendChild(renderer.view);
+   
+   
+   // Function to handle scaling
+   function handleResize() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        const windowRatio = windowWidth / windowHeight;
+        const gameRatio = constants['gameWidth'] / constants['gameHeight'];
+
+        let scale;
+        if (windowRatio > gameRatio) {
+            // Window is wider than the game ratio
+            scale = windowHeight / constants['gameHeight'];
+        } else {
+            // Window is taller than the game ratio
+            scale = windowWidth / constants['gameWidth'];
+        }
+
+        // Apply the scale to the renderer view (canvas)
+        renderer.view.style.width = `${constants['gameWidth'] * scale}px`;
+        renderer.view.style.height = `${constants['gameHeight'] * scale}px`;
+    }
+
+    // Initial resize
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+   
    const gameUpdate = createGameUpdate(stage, renderer);
 
    const ticker = new Ticker();

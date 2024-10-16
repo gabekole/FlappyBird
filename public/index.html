@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Flappy Bird Game</title>
-    <meta name="description" content="A vertical Flappy Bird-style game">
+    <title>Vertical Flappy Bird</title>
+    <meta name="description" content="A vertical Flappy Bird game">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/main.js" defer></script>
     <style>
@@ -13,21 +13,22 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #87CEEB; /* Sky blue background */
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: skyblue;
         }
         #game-area {
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
+        #game-area canvas {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div id="game-area">
-    </div>
+    <div id="game-area"></div>
 </body>
 </html>
