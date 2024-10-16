@@ -1,5 +1,14 @@
 import { Container, Texture } from 'pixi.js';
 
+
+
+/*
+    ABOUT:
+
+    This file handles the parallax background by grouping multiple
+    Sprites and providing a utility function to move the entire background.
+*/
+
 import backgroundImg from '../public/assets/background/layers/parallax-mountain-bg.png'
 import mountainsImg from '../public/assets/background/layers/parallax-mountain-mountains.png'
 import treesImg from '../public/assets/background/layers/parallax-mountain-trees.png'

@@ -1,3 +1,10 @@
+/*
+    ABOUT:
+
+    This is the application entry point.
+*/
+
+
 import { autoDetectRenderer, Container, Ticker } from 'pixi.js'
 import './styles/style.css'
 import { createGameUpdate } from './gameLoop.ts'

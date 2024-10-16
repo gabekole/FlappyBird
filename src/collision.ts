@@ -1,3 +1,10 @@
+/*
+    ABOUT:
+
+    This file defines utility functions to check for collision between different entities
+*/
+
+
 import { Sprite } from 'pixi.js'
 import { Pipe } from './pipe'
 import { Player } from './players'

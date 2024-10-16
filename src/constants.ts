@@ -1,3 +1,10 @@
+/*
+    ABOUT:
+
+    This file defines various constants that are used globally
+*/
+
+
 const constantValues = {
     gameWidth: 415,
     gameHeight: 720,
